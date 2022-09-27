@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Widget.NotABugMobile.Button.UnelevatedButtonExtraSmall" parent="Widget.Material3.Button.UnelevatedButton">
+        <item name="cornerRadius">4dp</item>
+    </style>
+
+    <style name="Widget.NotABugMobile.Button.OutlinedButtonExtraSmall" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">4dp</item>
+    </style>
+
+</resources>

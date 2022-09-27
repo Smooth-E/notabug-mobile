@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">NotABug Mobile</string>
     <string name="website_name">NotABug.org</string>
+    <string name="label_login">Login</string>
+    <string name="label_password">Password</string>
+    <string name="action_login">Login</string>
+    <string name="action_register">Register</string>
+    <string name="action_skip_login">Browse without logging in</string>
 </resources>
