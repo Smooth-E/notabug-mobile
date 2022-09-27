@@ -14,7 +14,7 @@
         android:theme="@style/Theme.NotABugMobile"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.NotABugMobile">
             <intent-filter>
