@@ -30,7 +30,7 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:textColor="@color/m3_sys_color_dynamic_light_primary" />
+            android:textColor="?android:colorPrimary" />
 
     </LinearLayout>
 
