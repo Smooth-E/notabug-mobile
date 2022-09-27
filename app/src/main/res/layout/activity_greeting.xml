@@ -64,7 +64,7 @@
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.UnelevatedButton"
+            style="@style/Widget.NotABugMobile.Button.UnelevatedButtonExtraSmall"
             android:layout_marginTop="5dp"
             android:text="@string/action_login" />
 
@@ -72,14 +72,14 @@
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.NotABugMobile.Button.OutlinedButtonExtraSmall"
             android:text="@string/action_register" />
 
         <Button
             android:id="@+id/button_skip_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.NotABugMobile.Button.OutlinedButtonExtraSmall"
             android:text="@string/action_skip_login" />
 
     </LinearLayout>
