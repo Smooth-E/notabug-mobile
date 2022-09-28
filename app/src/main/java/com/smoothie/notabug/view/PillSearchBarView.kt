@@ -14,6 +14,12 @@ import com.smoothie.notabug.R
 
 class PillSearchBarView : FrameLayout {
 
+    public var hint : String? = "No hint provided"
+        set(value) {
+            field = value
+            findViewById<EditText>(R.id.edit_text).hint = field
+        }
+
     constructor(context : Context, attrs : AttributeSet) : super(context, attrs) {
         buildView(context, attrs)
     }
@@ -27,7 +33,7 @@ class PillSearchBarView : FrameLayout {
         findViewById<View>(R.id.view_root).backgroundTintList = ColorStateList.valueOf(SurfaceColors.getColorForElevation(context, 8f))
         if (attrs != null) {
             val obtainedAttributes = context.theme.obtainStyledAttributes(attrs, R.styleable.PillSearchBarView, 0, 0)
-            var hint = obtainedAttributes.getString(R.styleable.PillSearchBarView_hint)
+            hint = obtainedAttributes.getString(R.styleable.PillSearchBarView_hint)
             if (hint == null || hint.isEmpty()) hint = context.getString(R.string.label_search)
             val icon = obtainedAttributes.getResourceId(R.styleable.PillSearchBarView_icon, R.drawable.ic_baseline_search_24)
             findViewById<EditText>(R.id.edit_text).hint = hint;
