@@ -34,7 +34,7 @@ class PillSearchBarView : FrameLayout {
         if (attrs != null) {
             val obtainedAttributes = context.theme.obtainStyledAttributes(attrs, R.styleable.PillSearchBarView, 0, 0)
             hint = obtainedAttributes.getString(R.styleable.PillSearchBarView_hint)
-            if (hint == null || hint.isEmpty()) hint = context.getString(R.string.label_search)
+            if (hint == null || hint!!.isEmpty()) hint = context.getString(R.string.label_search)
             val icon = obtainedAttributes.getResourceId(R.styleable.PillSearchBarView_icon, R.drawable.ic_baseline_search_24)
             findViewById<EditText>(R.id.edit_text).hint = hint;
             findViewById<ImageView>(R.id.icon).setImageResource(icon)
