@@ -1,7 +1,6 @@
 package com.smoothie.notabug.anonymous
 
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.elevation.SurfaceColors
@@ -19,7 +18,7 @@ class BrowsingActivity : AppCompatActivity() {
         window.statusBarColor = surfaceColor
         window.navigationBarColor = surfaceColor
 
-        bottomNavigationBar = findViewById(R.id.navigation_bar)
+        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar)
 
         bottomNavigationBar.setOnItemSelectedListener { item ->
             when (item.itemId) {

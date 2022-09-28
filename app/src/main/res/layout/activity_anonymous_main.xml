@@ -7,12 +7,14 @@
     android:orientation="vertical">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/navigation_bar" />
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_bar"
+        android:name="com.smoothie.notabug.anonymous.CodeFragment"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation_bar"
+        android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation_anonymous"
