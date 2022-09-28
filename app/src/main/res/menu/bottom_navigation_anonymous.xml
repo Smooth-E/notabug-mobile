@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_repositories"
+        android:title="@string/tab_repositories" />
+
+    <item
+        android:id="@+id/tab_mirrors"
+        android:title="@string/tab_mirrors" />
+
+    <item
+        android:id="@+id/tab_users"
+        android:title="@string/tab_users" />
+
+    <item
+        android:id="@+id/tab_organizations"
+        android:title="@string/tab_organizations" />
+
+    <item
+        android:id="@+id/tab_other"
+        android:title="@string/tab_other" />
+
+</menu>
