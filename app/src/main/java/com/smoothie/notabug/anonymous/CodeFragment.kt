@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.smoothie.notabug.R
 
-class CodeFragment : Fragment(R.layout.fragment_anonymous_code) {
+class CodeFragment : Fragment(R.layout.fragment_anonymous_pager) {
 
     private val tabNames = arrayOf(R.string.tab_repositories, R.string.tab_mirrors)
     private val tabIcons = arrayOf(R.drawable.ic_baseline_class_24, R.drawable.ic_baseline_collections_bookmark_24)
