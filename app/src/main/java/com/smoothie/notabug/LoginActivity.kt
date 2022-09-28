@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             MaterialAlertDialogBuilder(this, centeredDialogStyle)
-                .setIcon(R.drawable.ic_round_admin_panel_settings_24)
+                .setIcon(R.drawable.ic_baseline_admin_panel_settings_24)
                 .setTitle(R.string.label_credentials_handling_dialog)
                 .setMessage(R.string.description_credentials_handling_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
