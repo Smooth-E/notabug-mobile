@@ -1,9 +1,11 @@
 <resources>
+    <string name="tab_code">Code</string>
+    <string name="tab_people">People</string>
+    <string name="tab_settings">Settings</string>
     <string name="tab_repositories">Repositories</string>
     <string name="tab_mirrors">Mirrors</string>
     <string name="tab_users">Users</string>
     <string name="tab_organizations">Organizations</string>
-    <string name="tab_other">Other</string>
 
     <string name="app_name">NotABug Mobile</string>
     <string name="label_website_name">NotABug.org</string>

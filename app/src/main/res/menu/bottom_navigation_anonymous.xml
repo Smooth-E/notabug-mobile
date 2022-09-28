@@ -2,28 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/tab_repositories"
-        android:icon="@drawable/ic_baseline_class_24"
-        android:title="@string/tab_repositories" />
+        android:id="@+id/tab_code"
+        android:icon="@drawable/ic_baseline_inventory_24"
+        android:title="@string/tab_code" />
 
     <item
-        android:id="@+id/tab_mirrors"
-        android:icon="@drawable/ic_baseline_collections_bookmark_24"
-        android:title="@string/tab_mirrors" />
-
-    <item
-        android:id="@+id/tab_users"
+        android:id="@+id/tab_people"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="@string/tab_users" />
+        android:title="@string/tab_people" />
 
     <item
-        android:id="@+id/tab_organizations"
-        android:icon="@drawable/ic_baseline_groups_24"
-        android:title="@string/tab_organizations" />
-
-    <item
-        android:id="@+id/tab_other"
-        android:icon="@drawable/ic_baseline_more_horiz_24"
-        android:title="@string/tab_other" />
+        android:id="@+id/tab_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/tab_settings" />
 
 </menu>
