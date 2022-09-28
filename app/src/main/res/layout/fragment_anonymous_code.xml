@@ -12,26 +12,19 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical|start">
+            android:layout_margin="10dp"
+            android:hint="@string/tab_code"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+            app:shapeAppearance="?attr/shapeAppearanceLargeComponent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_inventory_24"
-                app:tint="?colorPrimary"
-                android:paddingHorizontal="5dp"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_code"
-                android:textAppearance="?attr/textAppearanceTitleLarge"/>
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
         
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
