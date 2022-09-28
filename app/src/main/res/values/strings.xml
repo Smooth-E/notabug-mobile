@@ -14,6 +14,7 @@
     <string name="label_register_dialog">Registration</string>
     <string name="label_credentials_handling_dialog">Credentials Handling</string>
     <string name="label_skip_login_dialog">Anonymous Browsing</string>
+    <string name="label_search">Search</string>
 
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>

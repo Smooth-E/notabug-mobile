@@ -15,7 +15,6 @@ class BrowsingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_anonymous_main)
 
         val surfaceColor = SurfaceColors.getColorForElevation(this, 8f)
-        window.statusBarColor = surfaceColor
         window.navigationBarColor = surfaceColor
 
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar)
