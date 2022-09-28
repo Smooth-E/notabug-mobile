@@ -3,22 +3,27 @@
 
     <item
         android:id="@+id/tab_repositories"
+        android:icon="@drawable/ic_baseline_class_24"
         android:title="@string/tab_repositories" />
 
     <item
         android:id="@+id/tab_mirrors"
+        android:icon="@drawable/ic_baseline_collections_bookmark_24"
         android:title="@string/tab_mirrors" />
 
     <item
         android:id="@+id/tab_users"
+        android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/tab_users" />
 
     <item
         android:id="@+id/tab_organizations"
+        android:icon="@drawable/ic_baseline_groups_24"
         android:title="@string/tab_organizations" />
 
     <item
         android:id="@+id/tab_other"
+        android:icon="@drawable/ic_baseline_more_horiz_24"
         android:title="@string/tab_other" />
 
 </menu>

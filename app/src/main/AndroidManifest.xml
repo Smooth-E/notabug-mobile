@@ -27,6 +27,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".anonymous.BrowsingActivity" android:exported="true" />
     </application>
 
 </manifest>

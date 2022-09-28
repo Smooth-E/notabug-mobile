@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.smoothie.notabug.anonymous.BrowsingActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             MaterialAlertDialogBuilder(this, centeredDialogStyle)
-                .setIcon(R.drawable.ic_baseline_admin_panel_settings_24)
+                .setIcon(R.drawable.ic_baseline_admin_panel_settings_24 )
                 .setTitle(R.string.label_credentials_handling_dialog)
                 .setMessage(R.string.description_credentials_handling_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
@@ -79,6 +80,8 @@ class LoginActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.action_continue) { dialog, _ ->
                     // TODO: Implement anonymous browsing
                     dialog.dismiss()
+                    this.startActivity(Intent(this, BrowsingActivity::class.java))
+                    this.finish()
                 }
                 .show()
         }
