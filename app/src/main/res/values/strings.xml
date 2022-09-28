@@ -4,12 +4,17 @@
     <string name="label_username">Username</string>
     <string name="label_password">Password</string>
     <string name="label_register_dialog">Registration</string>
+    <string name="label_credentials_handling_dialog">Credentials Handling</string>
+    <string name="label_skip_login_dialog">Anonymous Browsing</string>
+
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
     <string name="action_skip_login">Browse without logging in</string>
     <string name="action_proceed">Proceed</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_continue">Continue</string>
+    <string name="action_open_browser">Open browser</string>
+
     <string name="description_register_dialog">
         NotABug.org requires you to solve a CAPTCHA in order to register.
         To prevent spam accounts this app does not handle the registration process.
@@ -18,6 +23,11 @@
     <string name="description_credentials_handling_dialog">
         This app will store your credentials unencrypted in the device storage.
         Storing credentials is needed to log you in automatically between sessions.
+    </string>
+    <string name="description_skip_login_dialog">
+        You can browse NotABug.org without logging in.
+        However, you will only be able to view public repositories, mirrors, organizations and people\'s profiles.
+        Users browsing anonymously have no ability to commit changes or create content.
     </string>
     <string name="description_empty_fields">
         Some fields are empty
