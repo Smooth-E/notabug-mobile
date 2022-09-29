@@ -18,7 +18,7 @@ class PeopleFragment : FadingFragment(R.layout.fragment_anonymous_pager) {
         super.onViewCreated(view, savedInstanceState)
         val viewPager2 = view.findViewById<ViewPager2>(R.id.view_pager2)
         val tabLayout = view.findViewById<TabLayout>(R.id.view_tab_layout)
-        viewPager2.adapter = PeopleFragmentStateAdapter(this)
+        viewPager2.adapter = PeopleFragmentStateAdapter(childFragmentManager, lifecycle)
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.setIcon(tabIcons[position])
             tab.setText(tabNames[position])
