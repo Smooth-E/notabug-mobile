@@ -1,4 +1,5 @@
 <resources>
+
     <string name="tab_code">Code</string>
     <string name="tab_people">People</string>
     <string name="tab_settings">Settings</string>
@@ -41,4 +42,8 @@
     <string name="description_empty_fields">
         Some fields are empty
     </string>
+
+    <string name="placeholder_repository_name">RepositoryName</string>
+    <string name="placeholder_repository_description">Repository description with some extra words. It may take several lines.</string>
+
 </resources>
