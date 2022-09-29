@@ -43,6 +43,8 @@
         Some fields are empty
     </string>
 
+    <string name="external_resources_icons8">https://icons8.com/</string>
+
     <string name="placeholder_repository_name">RepositoryName</string>
     <string name="placeholder_repository_description">Repository description with some extra words. It may take several lines.</string>
 

@@ -41,7 +41,7 @@
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="VeryCoolRepository" />
+                android:text="@string/placeholder_repository_name" />
 
             <TextView
                 android:id="@+id/description"
