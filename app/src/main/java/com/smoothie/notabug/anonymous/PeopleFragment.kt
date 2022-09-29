@@ -6,9 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.smoothie.notabug.FadingFragment
 import com.smoothie.notabug.R
 
-class PeopleFragment : Fragment(R.layout.fragment_anonymous_pager) {
+class PeopleFragment : FadingFragment(R.layout.fragment_anonymous_pager) {
 
     private val tabNames = arrayOf(R.string.tab_users, R.string.tab_organizations)
     private val tabIcons = arrayOf(R.drawable.ic_baseline_person_24, R.drawable.ic_baseline_groups_24)

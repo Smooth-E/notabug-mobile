@@ -1,6 +1,7 @@
 package com.smoothie.notabug.anonymous
 
 import android.os.Bundle
+import android.provider.Contacts.People
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
@@ -26,17 +27,18 @@ class BrowsingActivity : AppCompatActivity() {
         fragmentContainer = findViewById(R.id.fragment_container_view)
 
         bottomNavigationBar.setOnItemSelectedListener { item ->
-            supportFragmentManager.commit {
-                setCustomAnimations(R.anim.alpha_fade_in, R.anim.alpha_fade_out)
-                val viewID = R.id.fragment_container_view
-                when (item.itemId) {
-                    R.id.tab_code -> replace<CodeFragment>(viewID)
-                    R.id.tab_people -> replace<PeopleFragment>(viewID)
-                    R.id.tab_settings -> replace<SettingsFragment>(viewID)
-                    else -> throw IllegalAccessError("Unexpected id: ${item.itemId}")
-                }
-                setReorderingAllowed(true)
+
+            val fragment = when (item.itemId) {
+                R.id.tab_code -> CodeFragment()
+                R.id.tab_people -> PeopleFragment()
+                R.id.tab_settings -> SettingsFragment()
+                else -> throw IllegalAccessError("Unexpected position: ${item.itemId}")
             }
+            supportFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fragment_container_view, fragment)
+                .commit()
+
             true
         }
     }
