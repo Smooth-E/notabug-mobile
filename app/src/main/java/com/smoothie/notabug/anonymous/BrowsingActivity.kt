@@ -1,6 +1,7 @@
 package com.smoothie.notabug.anonymous
 
 import android.os.Bundle
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
@@ -25,31 +26,18 @@ class BrowsingActivity : AppCompatActivity() {
         fragmentContainer = findViewById(R.id.fragment_container_view)
 
         bottomNavigationBar.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.tab_code -> {
-                    supportFragmentManager.commit {
-                        replace<CodeFragment>(R.id.fragment_container_view)
-                        setReorderingAllowed(true)
-                    }
-                    true
+            supportFragmentManager.commit {
+                setCustomAnimations(R.anim.alpha_fade_in, R.anim.alpha_fade_out)
+                val viewID = R.id.fragment_container_view
+                when (item.itemId) {
+                    R.id.tab_code -> replace<CodeFragment>(viewID)
+                    R.id.tab_people -> replace<PeopleFragment>(viewID)
+                    R.id.tab_settings -> replace<SettingsFragment>(viewID)
+                    else -> throw IllegalAccessError("Unexpected id: ${item.itemId}")
                 }
-                R.id.tab_people -> {
-                    supportFragmentManager.commit {
-                        replace<PeopleFragment>(R.id.fragment_container_view)
-                        setReorderingAllowed(true)
-                    }
-                    true
-                }
-                R.id.tab_settings -> {
-                    supportFragmentManager.commit {
-                        replace<SettingsFragment>(R.id.fragment_container_view)
-                        setReorderingAllowed(true)
-                    }
-                    true
-                }
-                else -> false
+                setReorderingAllowed(true)
             }
+            true
         }
     }
-
 }
