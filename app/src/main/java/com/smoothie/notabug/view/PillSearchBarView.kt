@@ -14,18 +14,18 @@ import com.smoothie.notabug.R
 
 class PillSearchBarView : FrameLayout {
 
-    public var hint : String? = "No hint provided"
+    var hint : String? = "No hint provided"
         set(value) {
             field = value
             findViewById<EditText>(R.id.edit_text).hint = field
         }
 
-    constructor(context : Context, attrs : AttributeSet) : super(context, attrs) {
-        buildView(context, attrs)
-    }
-
     constructor(context : Context) : super(context) {
         buildView(context, null)
+    }
+
+    constructor(context : Context, attrs : AttributeSet) : super(context, attrs) {
+        buildView(context, attrs)
     }
 
     private fun buildView(context: Context, attrs: AttributeSet?) {

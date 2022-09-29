@@ -19,6 +19,7 @@ class CodeFragment : Fragment(R.layout.fragment_anonymous_pager) {
         val tabLayout = view.findViewById<TabLayout>(R.id.view_tab_layout)
         val adapter = CodeFragmentStateAdapter(this)
         viewPager2.adapter = adapter
+        viewPager2.isUserInputEnabled = false
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.setText(tabNames[position])
             tab.setIcon(tabIcons[position])

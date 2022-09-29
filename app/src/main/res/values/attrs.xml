@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PillSearchBarView">
+
+    <declare-styleable name="GlobalAttributeDeclaration">
+        <attr name="description" format="string" />
+        <attr name="forksAmount" format="integer" />
         <attr name="hint" format="string" />
         <attr name="icon" format="reference" />
+        <attr name="modificationTimeString" format="string" />
+        <attr name="name" format="string" />
+        <attr name="starsAmount" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="PillSearchBarView">
+        <attr name="icon" />
+        <attr name="hint" />
+    </declare-styleable>
+
+    <declare-styleable name="RepositoryListItem">
+        <attr name="icon" />
+        <attr name="name" />
+        <attr name="description" />
+        <attr name="modificationTimeString" />
+        <attr name="starsAmount" />
+        <attr name="forksAmount" />
+    </declare-styleable>
+
 </resources>
