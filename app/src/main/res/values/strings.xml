@@ -51,8 +51,14 @@
 
     <string name="external_resources_icons8">https://icons8.com/</string>
 
-    <string name="placeholder_repository_name">RepositoryName</string>
+    <string name="placeholder_repository_name">RepositoryNamePlaceholder</string>
     <string name="placeholder_repository_description">Repository description with some extra words. It may take several lines.</string>
     <string name="placeholder_last_modified">Updated 16 minutes ago</string>
+    <string name="placeholder_username">john_doe</string>
+    <string name="placeholder_full_name">John Doe</string>
+    <string name="placeholder_email">johndoe@mailservice.com</string>
+    <string name="placeholder_website">https://example.com</string>
+    <string name="placeholder_location">USA</string>
+    <string name="placeholder_join_date">Joined February 1st, 2000</string>
 
 </resources>
