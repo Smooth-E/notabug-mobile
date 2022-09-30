@@ -1,6 +1,5 @@
 package com.smoothie.notabug.anonymous
 
-import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.smoothie.notabug.R
 import com.smoothie.notabug.view.RepositoryListItem
 
-class CodeRecyclerViewAdapter(private val fragment: RepositoriesFragment?, private val dataSet : ArrayList<DataHolder>) : RecyclerView.Adapter<ViewHolder>() {
+class CodeRecyclerViewAdapter(private val fragment: CodeRecyclerViewFragment?, private val dataSet : ArrayList<DataHolder>) : RecyclerView.Adapter<ViewHolder>() {
 
     data class DataHolder (
         val url: String,
