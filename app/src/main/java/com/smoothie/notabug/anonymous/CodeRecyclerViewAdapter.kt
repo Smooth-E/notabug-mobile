@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.smoothie.notabug.R
 import com.smoothie.notabug.view.RepositoryListItem
 
-class CodeRecyclerViewAdapter(private val activity: Activity, private val dataSet : ArrayList<DataHolder>) : RecyclerView.Adapter<ViewHolder>() {
+class CodeRecyclerViewAdapter(private val fragment: RepositoriesFragment?, private val dataSet : ArrayList<DataHolder>) : RecyclerView.Adapter<ViewHolder>() {
 
     data class DataHolder (
         val url: String,
@@ -22,7 +22,7 @@ class CodeRecyclerViewAdapter(private val activity: Activity, private val dataSe
         val forks: Int
         )
 
-    class ViewHolderItem(view: RepositoryListItem) : RecyclerView.ViewHolder(view) {
+    class ViewHolderItem(view: RepositoryListItem) : ViewHolder(view) {
         val view: RepositoryListItem
 
         init {
@@ -30,7 +30,7 @@ class CodeRecyclerViewAdapter(private val activity: Activity, private val dataSe
         }
     }
 
-    class ViewHolderFooter(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolderFooter(view: View) : ViewHolder(view)
 
     private companion object {
         private const val TYPE_ITEM = 0
@@ -63,6 +63,7 @@ class CodeRecyclerViewAdapter(private val activity: Activity, private val dataSe
             holder.view.modificationDateString = data.modificationDate
             holder.view.starsAmount = data.stars
             holder.view.forksAmount = data.forks
+            if (position == 20 * fragment!!.getPageNumber() - 10 - 1) fragment?.loadNewPage()
         }
     }
 

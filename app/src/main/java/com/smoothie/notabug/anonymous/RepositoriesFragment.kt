@@ -1,12 +1,7 @@
 package com.smoothie.notabug.anonymous
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.constraintlayout.motion.widget.Debug
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smoothie.notabug.FadingFragment
@@ -18,23 +13,29 @@ class RepositoriesFragment : FadingFragment(R.layout.fragment_anonymous_reposito
     private lateinit var recyclerView: RecyclerView
 
     private var data: ArrayList<CodeRecyclerViewAdapter.DataHolder> = ArrayList()
+    private var pageNumber = 0
+
+    fun getPageNumber() = pageNumber
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.view_root)
 
-        val adapter = CodeRecyclerViewAdapter(activity as Activity, data)
+        val adapter = CodeRecyclerViewAdapter(this, data)
         recyclerView.setHasFixedSize(false)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
-        LoadingThread(activity).start()
+        loadNewPage()
     }
 
-    inner class LoadingThread(private val activity: Activity?) : Thread() {
+    fun loadNewPage() = LoadingThread(this).start()
+
+    inner class LoadingThread(private val fragment: RepositoriesFragment?) : Thread() {
         override fun run() {
-            val document = Jsoup.connect("https://notabug.org/explore/repos").get()
+            pageNumber++
+            val document = Jsoup.connect("https://notabug.org/explore/repos?page=$pageNumber").get()
             val repositories = document.body().getElementsByClass("ui repository list")[0]
             activity?.runOnUiThread {
                 for (element in repositories.getElementsByClass("item")) {
@@ -52,9 +53,12 @@ class RepositoriesFragment : FadingFragment(R.layout.fragment_anonymous_reposito
                         forks = stats[1].text().toInt()
                     )
                     data.add(holder)
+                    if (pageNumber > 1) recyclerView.adapter?.notifyItemInserted(data.size - 1)
                 }
-                val adapter = CodeRecyclerViewAdapter(activity, data)
-                recyclerView.adapter = adapter
+                if (pageNumber <= 1) {
+                    recyclerView.layoutManager?.scrollToPosition(0)
+                    (recyclerView.adapter as CodeRecyclerViewAdapter).notifyItemRangeInserted(0, 20)
+                }
             }
         }
     }

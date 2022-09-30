@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:focusable="false"/>
 
     <LinearLayout
         android:layout_width="0dp"
