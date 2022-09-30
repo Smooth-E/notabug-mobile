@@ -24,7 +24,7 @@ class RepositoriesFragment : FadingFragment(R.layout.fragment_anonymous_reposito
 
         recyclerView = view.findViewById(R.id.view_root)
 
-        val adapter = CodeRecyclerViewAdapter(data)
+        val adapter = CodeRecyclerViewAdapter(activity as Activity, data)
         recyclerView.setHasFixedSize(false)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
@@ -53,7 +53,7 @@ class RepositoriesFragment : FadingFragment(R.layout.fragment_anonymous_reposito
                     )
                     data.add(holder)
                 }
-                val adapter = CodeRecyclerViewAdapter(data)
+                val adapter = CodeRecyclerViewAdapter(activity, data)
                 recyclerView.adapter = adapter
             }
         }
