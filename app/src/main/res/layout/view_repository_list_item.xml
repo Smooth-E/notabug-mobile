@@ -24,7 +24,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_baseline_class_24"
-            app:tint="?attr/colorOnSurface"/>
+            app:tint="?attr/colorOnSurface"
+            android:adjustViewBounds="true"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -62,10 +63,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_baseline_access_time_filled_24"
+                android:adjustViewBounds="true"
+                android:paddingEnd="3dp"
+                tools:ignore="RtlSymmetry"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
-                app:tint="?colorSecondary"/>
+                app:tint="?colorSecondary" />
 
             <TextView
                 android:id="@+id/date_modified"
@@ -82,6 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_baseline_star_24"
+                android:adjustViewBounds="true"
+                android:paddingHorizontal="2dp"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
                 app:layout_constraintEnd_toStartOf="@id/stars"
@@ -95,17 +101,20 @@
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
                 app:layout_constraintEnd_toStartOf="@id/icon_forks"
-                android:text="16"/>
+                tools:ignore="HardcodedText"
+                android:text="5" />
 
             <ImageView
                 android:id="@+id/icon_forks"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/icons8_code_fork"
+                android:adjustViewBounds="true"
+                android:paddingStart="3dp"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
                 app:layout_constraintEnd_toStartOf="@id/forks"
-                app:tint="?colorSecondary"/>
+                app:tint="?colorSecondary" />
 
             <TextView
                 android:id="@+id/forks"
@@ -115,7 +124,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
-                android:text="5"/>
+                tools:ignore="HardcodedText"
+                android:text="16"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,14 +11,48 @@ import org.w3c.dom.Text
 
 class RepositoryListItem : FrameLayout {
 
-    private var icon = R.drawable.ic_baseline_class_24
-    private var forksAmount = 5
-    private var starsAmount = 16
+    private lateinit var imageViewIcon : ImageView
+    private lateinit var textViewName : TextView
+    private lateinit var textViewDescription : TextView
+    private lateinit var textViewModificationDate : TextView
+    private lateinit var textViewStars : TextView
+    private lateinit var textViewForks : TextView
 
-    private lateinit var name : String
-    private lateinit var description : String
-    private lateinit var modificationDateString : String
+    var icon = R.drawable.ic_baseline_class_24
+        set (value) {
+            imageViewIcon.setImageResource(value)
+            field = value
+        }
 
+    var name : String = context.getString(R.string.placeholder_repository_name)
+        set (value) {
+            textViewName.text = name
+            field = value
+        }
+
+    var description : String = context.getString(R.string.placeholder_repository_description)
+        set (value) {
+            textViewDescription.text =value
+            field = value
+        }
+
+    var modificationDateString : String = context.getString(R.string.placeholder_last_modified)
+        set (value) {
+            textViewModificationDate.text = value
+            field = value
+        }
+
+    var forksAmount = 5
+        set (value) {
+            textViewForks.text = value.toString()
+            field = value
+        }
+
+    var starsAmount = 16
+        set (value) {
+            textViewStars.text = value.toString()
+            field = value
+        }
 
     constructor(context: Context) : super(context) {
         buildView(context, null)
@@ -30,9 +64,14 @@ class RepositoryListItem : FrameLayout {
 
     private fun buildView(context: Context, attributeSet: AttributeSet?) {
         val view = inflate(context, R.layout.view_repository_list_item, this)
-        name = context.getString(R.string.placeholder_repository_name)
-        description = context.getString(R.string.placeholder_repository_description)
-        modificationDateString = context.getString(R.string.placeholder_last_modified)
+
+        imageViewIcon = view.findViewById(R.id.icon)
+        textViewName = view.findViewById(R.id.name)
+        textViewDescription = view.findViewById(R.id.description)
+        textViewModificationDate = view.findViewById(R.id.date_modified)
+        textViewStars = view.findViewById(R.id.stars)
+        textViewForks = view.findViewById(R.id.forks)
+
         if (attributeSet != null) {
             val attributes = context.theme.obtainStyledAttributes(attributeSet, R.styleable.PillSearchBarView, 0, 0)
             icon = attributes.getResourceId(R.styleable.RepositoryListItem_icon, R.drawable.ic_baseline_class_24)
@@ -42,11 +81,5 @@ class RepositoryListItem : FrameLayout {
             forksAmount = attributes.getInteger(R.styleable.RepositoryListItem_forksAmount, 16)
             starsAmount = attributes.getInteger(R.styleable.RepositoryListItem_starsAmount, 5)
         }
-        view.findViewById<TextView>(R.id.name).text = name
-        view.findViewById<ImageView>(R.id.icon).setImageResource(icon)
-        view.findViewById<TextView>(R.id.description).text = description
-        view.findViewById<TextView>(R.id.date_modified).text = modificationDateString
-        view.findViewById<TextView>(R.id.stars).text = starsAmount.toString()
-        view.findViewById<TextView>(R.id.forks).text = forksAmount.toString()
     }
 }

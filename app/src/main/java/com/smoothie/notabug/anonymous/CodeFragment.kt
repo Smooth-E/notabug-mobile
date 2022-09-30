@@ -29,6 +29,6 @@ class CodeFragment : FadingFragment(R.layout.fragment_anonymous_pager) {
             tab.setText(tabNames[position])
             tab.setIcon(tabIcons[position])
         }.attach()
-        (view?.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }
+        (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }
     }
 }
