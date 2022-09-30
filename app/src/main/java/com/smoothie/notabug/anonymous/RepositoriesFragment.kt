@@ -38,15 +38,18 @@ class RepositoriesFragment : FadingFragment(R.layout.fragment_anonymous_reposito
             val repositories = document.body().getElementsByClass("ui repository list")[0]
             activity?.runOnUiThread {
                 for (element in repositories.getElementsByClass("item")) {
-                    val header = element.getElementsByClass("name")[0]
+                    val header = element.getElementsByClass("ui header")[0]
+                    val name = element.getElementsByClass("name")[0]
+                    val stats = header.getElementsByClass("ui right metas")[0].getElementsByTag("span")
+                    val possibleDescription = element.getElementsByClass("has-emoji")
                     val holder = CodeRecyclerViewAdapter.DataHolder(
-                        url = header.attr("href"),
+                        url = name.attr("href"),
                         icon = R.drawable.ic_baseline_class_24,
-                        name = header.text(),
-                        description = "Hello",
-                        modificationDate = "",
-                        stars = 123,
-                        forks = 123
+                        name = name.text(),
+                        description = if (possibleDescription.size > 0) possibleDescription[0].text() else "",
+                        modificationDate = element.getElementsByClass("time")[0].text(),
+                        stars = stats[0].text().toInt(),
+                        forks = stats[1].text().toInt()
                     )
                     data.add(holder)
                 }
