@@ -52,9 +52,9 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
 
     protected fun getFragment() = fragment
 
-    protected abstract fun onBindItemViewHolder(holder: ViewHolderItem<ListItemViewType>, position: Int)
+    protected abstract fun onBindItemViewHolder(view: ListItemViewType, position: Int)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position != dataSet.size) onBindItemViewHolder(holder as ViewHolderItem<ListItemViewType>, position)
+        if (position != dataSet.size) onBindItemViewHolder((holder as ViewHolderItem<ListItemViewType>).view, position)
     }
 }

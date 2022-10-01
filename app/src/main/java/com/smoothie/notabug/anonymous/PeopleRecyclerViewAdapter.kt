@@ -1,16 +1,12 @@
 package com.smoothie.notabug.anonymous
 
+import android.content.Context
 import android.graphics.drawable.Drawable
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.smoothie.notabug.R
 import com.smoothie.notabug.view.EntityListItem
 
-class PeopleRecyclerViewAdapter(private val fragment: PeopleRecyclerViewFragment?, private var dataSet: ArrayList<DataHolder>) //: RecyclerView.Adapter<ViewHolder>() {
-{
+class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: ArrayList<DataHolder>)
+    : RecyclerViewWithFooterAdapter<PeopleRecyclerViewAdapter.DataHolder, PeopleRecyclerViewFragment, EntityListItem>(fragment, data) {
+
     data class DataHolder (
         val profilePicture: Drawable,
         val username: String,
@@ -21,6 +17,18 @@ class PeopleRecyclerViewAdapter(private val fragment: PeopleRecyclerViewFragment
         val joinDate: String
     )
 
+    override fun getListItemView(context: Context) = EntityListItem(context)
 
+    override fun onBindItemViewHolder(view: EntityListItem, position: Int) {
+        val data = getDataSet()[position]
+        view.profilePicture = data.profilePicture
+        view.username = data.username
+        view.fullName = data.fullName
+        view.email = data.email
+        view.website = data.website
+        view.location = data.location
+        view.joinDate = data.joinDate
+        if (position == 20 * getFragment().getPageNumber() - 10 - 1) getFragment().loadNewPage()
+    }
 
 }
