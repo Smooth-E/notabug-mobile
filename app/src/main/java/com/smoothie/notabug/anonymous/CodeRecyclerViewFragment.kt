@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.smoothie.notabug.FadingFragment
 import com.smoothie.notabug.R
 import org.jsoup.Jsoup
@@ -11,6 +13,7 @@ import org.jsoup.nodes.Element
 
 open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous_repositories) {
 
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
 
     protected var data: ArrayList<CodeRecyclerViewAdapter.DataHolder> = ArrayList()
@@ -24,7 +27,16 @@ open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.view_root)
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+        recyclerView = view.findViewById(R.id.recycler_view)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            pageNumber = 0
+            val size = data.size
+            for (index in 0 until size) data.removeFirst()
+            recyclerView.adapter?.notifyItemRangeRemoved(0, size)
+            loadNewPage()
+        }
 
         val adapter = CodeRecyclerViewAdapter(this, data)
         recyclerView.setHasFixedSize(false)
@@ -62,6 +74,7 @@ open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous
                 if (pageNumber <= 1) {
                     recyclerView.layoutManager?.scrollToPosition(0)
                     (recyclerView.adapter as CodeRecyclerViewAdapter).notifyItemRangeInserted(0, 20)
+                    swipeRefreshLayout.isRefreshing = false
                 }
             }
         }

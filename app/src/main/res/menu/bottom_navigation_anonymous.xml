@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/tab_people"
-        android:icon="@drawable/ic_baseline_groups_24"
+        android:icon="@drawable/ic_baseline_group_24"
         android:title="@string/tab_people" />
 
     <item
