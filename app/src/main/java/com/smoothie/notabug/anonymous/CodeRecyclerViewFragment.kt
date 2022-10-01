@@ -5,13 +5,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.smoothie.notabug.FadingFragment
 import com.smoothie.notabug.R
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 
-open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous_repositories) {
+open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous_scroller) {
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView

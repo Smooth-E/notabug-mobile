@@ -62,7 +62,7 @@ class CodeRecyclerViewAdapter(private val fragment: CodeRecyclerViewFragment?, p
             holder.view.modificationDateString = data.modificationDate
             holder.view.starsAmount = data.stars
             holder.view.forksAmount = data.forks
-            if (position == 20 * fragment!!.getPageNumber() - 10 - 1) fragment?.loadNewPage()
+            if (position == 20 * fragment!!.getPageNumber() - 10 - 1) fragment.loadNewPage()
         }
     }
 
