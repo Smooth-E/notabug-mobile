@@ -55,8 +55,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name"
-                android:text="@string/placeholder_repository_description"
-                android:paddingBottom="5dp"/>
+                android:text="@string/placeholder_repository_description" />
 
             <ImageView
                 android:id="@+id/icon_modification_date"
@@ -69,7 +68,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintBottom_toBottomOf="@id/date_modified"
-                app:tint="?colorSecondary" />
+                app:tint="?colorSecondary"
+                android:paddingTop="5dp"/>
 
             <TextView
                 android:id="@+id/date_modified"
@@ -79,7 +79,8 @@
                 app:layout_constraintStart_toEndOf="@id/icon_modification_date"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 app:layout_constraintEnd_toStartOf="@id/icon_stars"
-                android:text="@string/placeholder_last_modified"/>
+                android:text="@string/placeholder_last_modified"
+                android:paddingTop="5dp"/>
 
             <ImageView
                 android:id="@+id/icon_stars"

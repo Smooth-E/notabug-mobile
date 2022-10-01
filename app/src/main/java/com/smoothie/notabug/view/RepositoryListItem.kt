@@ -3,6 +3,7 @@ package com.smoothie.notabug.view
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,9 +31,13 @@ class RepositoryListItem : FrameLayout {
             field = value
         }
 
-    var description : String = context.getString(R.string.placeholder_repository_description)
+    var description : String? = context.getString(R.string.placeholder_repository_description)
         set (value) {
-            textViewDescription.text =value
+            if (value != null && value.isNotEmpty()) {
+                textViewDescription.text = value
+                textViewDescription.visibility = View.VISIBLE
+            }
+            else textViewDescription.visibility = View.GONE
             field = value
         }
 
@@ -82,4 +87,5 @@ class RepositoryListItem : FrameLayout {
             starsAmount = attributes.getInteger(R.styleable.RepositoryListItem_starsAmount, 5)
         }
     }
+
 }
