@@ -8,7 +8,7 @@ class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: Arra
     : RecyclerViewWithFooterAdapter<PeopleRecyclerViewAdapter.DataHolder, PeopleRecyclerViewFragment, EntityListItem>(fragment, data) {
 
     data class DataHolder (
-        val profilePicture: Drawable,
+        val profilePicture: Drawable?,
         val username: String,
         val fullName:String,
         val email: String,
@@ -28,7 +28,7 @@ class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: Arra
         view.website = data.website
         view.location = data.location
         view.joinDate = data.joinDate
-        if (position == 20 * getFragment().getPageNumber() - 10 - 1) getFragment().loadNewPage()
+        if (position == 20 * getFragment().obtainPageNumber() - 10 - 1) getFragment().loadNewPage()
     }
 
 }

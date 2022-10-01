@@ -2,6 +2,8 @@ package com.smoothie.notabug
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -13,12 +15,16 @@ class PeopleFragment : FadingFragment(R.layout.fragment_anonymous_pager) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewPager2 = view.findViewById<ViewPager2>(R.id.view_pager2)
+        postponeEnterTransition()
+        val viewPager2 = view.findViewById<ViewPager2>(R.id.view_pager2);
         val tabLayout = view.findViewById<TabLayout>(R.id.view_tab_layout)
-        viewPager2.adapter = PeopleFragmentStateAdapter(childFragmentManager, lifecycle)
+        val adapter = PeopleFragmentStateAdapter(childFragmentManager, lifecycle)
+        viewPager2.adapter = adapter
+        viewPager2.isUserInputEnabled = false
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.setIcon(tabIcons[position])
             tab.setText(tabNames[position])
+            tab.setIcon(tabIcons[position])
         }.attach()
+        (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }
     }
 }
