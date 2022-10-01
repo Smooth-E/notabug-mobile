@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.smoothie.notabug.R
 import com.smoothie.notabug.view.EntityListItem
 
-class PeopleRecyclerViewAdapter(private val fragment: PeopleRecyclerViewFragment?, private var dataSet: ArrayList<DataHolder>) : RecyclerView.Adapter<ViewHolder>() {
-
+class PeopleRecyclerViewAdapter(private val fragment: PeopleRecyclerViewFragment?, private var dataSet: ArrayList<DataHolder>) //: RecyclerView.Adapter<ViewHolder>() {
+{
     data class DataHolder (
         val profilePicture: Drawable,
         val username: String,

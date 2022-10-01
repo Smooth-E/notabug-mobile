@@ -13,8 +13,8 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
     private val dataSet: ArrayList<DataHolderType>
     ) : RecyclerView.Adapter<ViewHolder>() {
 
-    inner class ViewHolderItem(view: ListItemViewType) : ViewHolder(view) {
-        val view: ListItemViewType
+    protected inner class ViewHolderItem<ViewType: ListItemViewType>(view: ViewType) : ViewHolder(view) {
+        val view: ViewType
 
         init {
             this.view = view
@@ -37,7 +37,7 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (viewType == TYPE_FOOTER) {
-            return CodeRecyclerViewAdapter.ViewHolderFooter(LayoutInflater.from(parent.context)
+            return ViewHolderFooter(LayoutInflater.from(parent.context)
                     .inflate(R.layout.view_list_footer, parent, false))
         }
         val view = getListItemView(parent.context)
@@ -48,4 +48,13 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
         return ViewHolderItem(view)
     }
 
+    protected fun getDataSet() = dataSet
+
+    protected fun getFragment() = fragment
+
+    protected abstract fun onBindItemViewHolder(holder: ViewHolderItem<ListItemViewType>, position: Int)
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (position != dataSet.size) onBindItemViewHolder(holder as ViewHolderItem<ListItemViewType>, position)
+    }
 }

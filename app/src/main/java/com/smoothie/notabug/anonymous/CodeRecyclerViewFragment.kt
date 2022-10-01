@@ -36,7 +36,7 @@ open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous
             loadNewPage()
         }
 
-        val adapter = CodeRecyclerViewAdapter(this, data)
+        val adapter = CodeRecyclerViewAdapter(data, this)
         recyclerView.setHasFixedSize(false)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
