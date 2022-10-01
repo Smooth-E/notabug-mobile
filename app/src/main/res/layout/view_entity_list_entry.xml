@@ -45,6 +45,7 @@
                 android:text="@string/placeholder_username" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -74,6 +75,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -103,6 +105,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_website"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -132,6 +135,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -159,6 +163,37 @@
                     android:paddingStart="5dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_join_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_join_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_baseline_access_time_filled_24"
+                    app:tint="?attr/colorSecondary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/join_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon_join_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:text="@string/placeholder_join_date"
+                    android:paddingStart="5dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
 

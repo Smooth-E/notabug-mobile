@@ -9,6 +9,12 @@
         <attr name="modificationTimeString" format="string" />
         <attr name="name" format="string" />
         <attr name="starsAmount" format="integer" />
+        <attr name="username" format="string" />
+        <attr name="fullName" format="string" />
+        <attr name="email" format="string" />
+        <attr name="website" format="string" />
+        <attr name="location" format="string" />
+        <attr name="joinDateString" format="string" />
     </declare-styleable>
 
     <declare-styleable name="PillSearchBarView">
@@ -23,6 +29,16 @@
         <attr name="modificationTimeString" />
         <attr name="starsAmount" />
         <attr name="forksAmount" />
+    </declare-styleable>
+    
+    <declare-styleable name="EntityListItem">
+        <attr name="icon" />
+        <attr name="username" />
+        <attr name="fullName" />
+        <attr name="email" />
+        <attr name="website" />
+        <attr name="location" />
+        <attr name="joinDateString" />
     </declare-styleable>
 
 </resources>
