@@ -7,44 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.jsoup.Jsoup
 
-open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous_scroller) {
+open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>() {
 
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var recyclerView: RecyclerView
-
-    protected var data: ArrayList<CodeRecyclerViewAdapter.DataHolder> = ArrayList()
     protected open val connectionUrl = "https://notabug.org"
-    protected open val iconResource = R.drawable.favicon
+    protected open val iconResource = R.drawable.ic_baseline_class_24
 
-    private var pageNumber = 0
+    override fun getAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
 
-    fun getPageNumber() = pageNumber
+    override fun loadNewPage() = LoadingThread().start()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
-        recyclerView = view.findViewById(R.id.recycler_view)
-
-        swipeRefreshLayout.setOnRefreshListener {
-            pageNumber = 0
-            val size = data.size
-            for (index in 0 until size) data.removeFirst()
-            recyclerView.adapter?.notifyItemRangeRemoved(0, size)
-            loadNewPage()
-        }
-
-        val adapter = CodeRecyclerViewAdapter(this, data)
-        recyclerView.setHasFixedSize(false)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-
-        loadNewPage()
-    }
-
-    fun loadNewPage() = LoadingThread(this).start()
-
-    inner class LoadingThread(private val fragment: CodeRecyclerViewFragment?) : Thread() {
+    inner class LoadingThread() : Thread() {
         override fun run() {
             pageNumber++
             val document = Jsoup.connect("${connectionUrl}?page=$pageNumber").get()

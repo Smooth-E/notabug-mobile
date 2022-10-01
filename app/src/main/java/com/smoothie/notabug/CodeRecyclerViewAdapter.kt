@@ -29,7 +29,7 @@ class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayLis
         view.modificationDateString = data.modificationDate
         view.starsAmount = data.stars
         view.forksAmount = data.forks
-        if (position == 20 * getFragment().getPageNumber() - 10 - 1) getFragment().loadNewPage()
+        if (position == 20 * getFragment().obtainPageNumber() - 10 - 1) getFragment().loadNewPage()
     }
 
 }
