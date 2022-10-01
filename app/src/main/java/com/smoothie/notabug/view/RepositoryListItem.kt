@@ -1,12 +1,14 @@
 package com.smoothie.notabug.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.android.material.elevation.SurfaceColors
 import com.smoothie.notabug.R
 import org.w3c.dom.Text
 
