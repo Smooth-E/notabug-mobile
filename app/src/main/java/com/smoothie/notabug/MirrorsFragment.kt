@@ -1,8 +1,4 @@
-package com.smoothie.notabug.anonymous
-
-import androidx.fragment.app.Fragment
-import com.smoothie.notabug.R
-import org.jsoup.nodes.Element
+package com.smoothie.notabug
 
 class MirrorsFragment : CodeRecyclerViewFragment() {
 

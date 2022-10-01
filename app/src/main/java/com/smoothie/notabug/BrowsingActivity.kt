@@ -1,15 +1,10 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import android.os.Bundle
-import android.provider.Contacts.People
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.elevation.SurfaceColors
-import com.smoothie.notabug.R
 
 class BrowsingActivity : AppCompatActivity() {
 

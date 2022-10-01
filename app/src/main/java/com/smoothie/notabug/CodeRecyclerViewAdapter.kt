@@ -1,4 +1,4 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import android.content.Context
 import android.util.Log

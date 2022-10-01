@@ -1,19 +1,15 @@
 package com.smoothie.notabug
 
-import android.app.Dialog
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.smoothie.notabug.anonymous.BrowsingActivity
 
 class LoginActivity : AppCompatActivity() {
 

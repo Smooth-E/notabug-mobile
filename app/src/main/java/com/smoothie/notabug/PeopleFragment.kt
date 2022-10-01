@@ -1,13 +1,10 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.smoothie.notabug.FadingFragment
-import com.smoothie.notabug.R
 
 class PeopleFragment : FadingFragment(R.layout.fragment_anonymous_pager) {
 

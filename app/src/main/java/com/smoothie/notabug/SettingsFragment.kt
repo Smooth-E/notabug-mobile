@@ -1,4 +1,4 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import androidx.fragment.app.Fragment
 import com.smoothie.notabug.FadingFragment

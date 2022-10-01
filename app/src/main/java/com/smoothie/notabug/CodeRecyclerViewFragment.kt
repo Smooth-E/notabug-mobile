@@ -1,12 +1,10 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.smoothie.notabug.FadingFragment
-import com.smoothie.notabug.R
 import org.jsoup.Jsoup
 
 open class CodeRecyclerViewFragment : FadingFragment(R.layout.fragment_anonymous_scroller) {

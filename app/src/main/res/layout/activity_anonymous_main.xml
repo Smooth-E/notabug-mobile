@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_bar"
-        android:name="com.smoothie.notabug.anonymous.CodeFragment"/>
+        android:name="com.smoothie.notabug.CodeFragment"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_bar"

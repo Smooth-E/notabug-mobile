@@ -1,4 +1,4 @@
-package com.smoothie.notabug.anonymous
+package com.smoothie.notabug
 
 import com.smoothie.notabug.FadingFragment
 import com.smoothie.notabug.R

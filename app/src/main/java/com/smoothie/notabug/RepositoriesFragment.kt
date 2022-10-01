@@ -1,7 +1,4 @@
-package com.smoothie.notabug.anonymous
-
-import com.smoothie.notabug.R
-import org.jsoup.nodes.Element
+package com.smoothie.notabug
 
 class RepositoriesFragment : CodeRecyclerViewFragment() {
 
