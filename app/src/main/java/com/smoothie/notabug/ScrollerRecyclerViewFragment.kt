@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerView.Adapter<*>, DataHolderType>
-    : FadingFragment(R.layout.fragment_anonymous_scroller) {
+    : FadingFragment(R.layout.fragment_refreshable_recycler) {
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView

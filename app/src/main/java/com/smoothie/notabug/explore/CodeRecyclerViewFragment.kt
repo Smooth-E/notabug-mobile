@@ -1,5 +1,8 @@
-package com.smoothie.notabug
+package com.smoothie.notabug.explore
 
+import com.smoothie.notabug.R
+import com.smoothie.notabug.ScrollerRecyclerViewFragment
+import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
 
 open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>() {

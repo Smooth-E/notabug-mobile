@@ -1,4 +1,6 @@
-package com.smoothie.notabug
+package com.smoothie.notabug.explore
+
+import com.smoothie.notabug.R
 
 class MirrorsFragment : CodeRecyclerViewFragment() {
 

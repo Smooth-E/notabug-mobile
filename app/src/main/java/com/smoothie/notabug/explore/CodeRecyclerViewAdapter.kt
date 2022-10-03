@@ -1,7 +1,7 @@
-package com.smoothie.notabug
+package com.smoothie.notabug.explore
 
 import android.content.Context
-import android.util.Log
+import com.smoothie.notabug.RecyclerViewWithFooterAdapter
 import com.smoothie.notabug.view.RepositoryListItem
 
 class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayList<DataHolder>)

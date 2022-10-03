@@ -1,9 +1,12 @@
-package com.smoothie.notabug
+package com.smoothie.notabug.explore
 
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
+import com.smoothie.notabug.R
+import com.smoothie.notabug.ScrollerRecyclerViewFragment
+import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode
 import java.io.InterruptedIOException
@@ -53,7 +56,8 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                             Log.e("PeopleRVF","Failed to download user avatar from $imageUrl with the following exception:"
                             )
                             exception.printStackTrace()
-                            ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_person_24, context?.theme)
+                            ResourcesCompat.getDrawable(resources,
+                                R.drawable.ic_baseline_person_24, context?.theme)
                         }
                     val content = user.getElementsByClass("content")[0]
                     val header = content.getElementsByClass("header")[0]

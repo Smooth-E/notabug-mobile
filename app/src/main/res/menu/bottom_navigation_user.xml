@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_explore"
+        android:icon="@drawable/ic_baseline_explore_24"
+        android:title="@string/tab_explore" />
+
+    <item
+        android:id="@+id/tab_communication"
+        android:icon="@drawable/ic_baseline_forum_24"
+        android:title="@string/tab_communication" />
+
+    <item
+        android:id="@+id/tab_profile"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/tab_profile" />
+
+</menu>

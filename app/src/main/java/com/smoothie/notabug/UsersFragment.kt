@@ -1,7 +1,6 @@
 package com.smoothie.notabug
 
-import androidx.fragment.app.Fragment
-import com.smoothie.notabug.R
+import com.smoothie.notabug.explore.PeopleRecyclerViewFragment
 
 class UsersFragment : PeopleRecyclerViewFragment() {
 
