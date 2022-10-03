@@ -6,29 +6,34 @@ import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode
+import java.io.InterruptedIOException
 import java.net.URL
 
 open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyclerViewAdapter, PeopleRecyclerViewAdapter.DataHolder>() {
 
-    private lateinit var thread: LoadingThread
     protected open val connectionUrl = "https://notabug.org"
 
     override fun getAdapter() = PeopleRecyclerViewAdapter(this, data)
 
-    override fun loadNewPage() = LoadingThread().start()
+    override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
 
     override fun onDestroyView() {
         super.onDestroyView()
-        thread.interrupt()
+        thread?.interrupt()
     }
 
-    inner class LoadingThread : Thread() {
-        init {
-            thread = this
-        }
-
+    inner class LoadingThread(private val isReloading: Boolean = false) : Thread() {
         override fun run() {
             try {
+                thread?.join()
+                thread = this
+                if (isReloading) {
+                    val size = data.size
+                    activity?.runOnUiThread {
+                        for (index in 0 until size) data.removeFirst()
+                        recyclerView.adapter?.notifyItemRangeRemoved(0, size)
+                    }
+                }
                 pageNumber++
                 val document = Jsoup.connect("${connectionUrl}?page=${pageNumber}").get()
                 val list = document.getElementsByClass("ui user list")[0]
@@ -39,7 +44,12 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                         try {
                             val bitmap = BitmapFactory.decodeStream(URL(imageUrl).openStream())
                             BitmapDrawable(resources, bitmap)
-                        } catch (exception: Exception) {
+                        }
+                        catch (exception: InterruptedIOException) {
+                            Log.d("TAG", "Thread interrupted, passing exception up the stack")
+                            throw exception
+                        }
+                        catch (exception: Exception) {
                             Log.e("PeopleRVF","Failed to download user avatar from $imageUrl with the following exception:"
                             )
                             exception.printStackTrace()
@@ -84,9 +94,8 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                         recyclerView.adapter?.notifyItemInserted(data.size - 1)
                     }
                 }
-                if (pageNumber == 1) {
+                if (pageNumber <= 1) {
                     activity?.runOnUiThread {
-                        recyclerView.scrollToPosition(0)
                         swipeRefreshLayout.isRefreshing = false
                     }
                 }

@@ -11,6 +11,7 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
+    protected var thread: Thread? = null
 
     protected var data: ArrayList<DataHolderType> = ArrayList()
 
@@ -20,7 +21,9 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
 
     protected abstract fun getAdapter(): RecyclerViewAdapterType
 
-    abstract fun loadNewPage()
+    fun loadNewPage() = loadNewPage(false)
+
+    abstract fun loadNewPage(isReloading: Boolean)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,11 +32,9 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
         recyclerView = view.findViewById(R.id.recycler_view)
 
         swipeRefreshLayout.setOnRefreshListener {
+            thread?.interrupt()
             pageNumber = 0
-            val size = data.size
-            for (index in 0 until size) data.removeFirst()
-            recyclerView.adapter?.notifyItemRangeRemoved(0, size)
-            loadNewPage()
+            loadNewPage(true)
         }
 
         val adapter = getAdapter()

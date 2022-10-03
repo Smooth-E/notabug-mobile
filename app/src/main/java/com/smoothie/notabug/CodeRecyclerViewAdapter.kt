@@ -20,7 +20,6 @@ class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayLis
     override fun getListItemView(context: Context): RepositoryListItem = RepositoryListItem(context)
 
     override fun onBindItemViewHolder(view: RepositoryListItem, position: Int) {
-        Log.d("TAG", "Binding holder: $position")
         val data = getDataSet()[position]
         view.icon = data.icon
         view.name = data.name

@@ -2,6 +2,7 @@ package com.smoothie.notabug
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import com.smoothie.notabug.view.EntityListItem
 
 class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: ArrayList<DataHolder>)

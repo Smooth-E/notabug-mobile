@@ -1,34 +1,34 @@
 package com.smoothie.notabug
 
-import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import android.util.Log
 import org.jsoup.Jsoup
 
 open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>() {
 
-    private lateinit var thread: LoadingThread
     protected open val connectionUrl = "https://notabug.org"
     protected open val iconResource = R.drawable.ic_baseline_class_24
 
     override fun getAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
 
-    override fun loadNewPage() = LoadingThread().start()
+    override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
 
     override fun onDestroyView() {
         super.onDestroyView()
-        thread.interrupt()
+        thread?.interrupt()
     }
 
-    inner class LoadingThread() : Thread() {
-        init {
-            thread = this
-        }
-
+    inner class LoadingThread(private val isReloading: Boolean = false) : Thread() {
         override fun run() {
             try {
+                thread?.join()
+                thread = this
+                if (isReloading) {
+                    val size = data.size
+                    activity?.runOnUiThread {
+                        for (index in 0 until size) data.removeFirst()
+                        recyclerView.adapter?.notifyItemRangeRemoved(0, size)
+                    }
+                }
                 pageNumber++
                 val document = Jsoup.connect("${connectionUrl}?page=$pageNumber").get()
                 val repositories = document.body().getElementsByClass("ui repository list")[0]
@@ -48,11 +48,12 @@ open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerV
                             forks = stats[1].text().toInt()
                         )
                         data.add(holder)
-                        if (pageNumber > 1) recyclerView.adapter?.notifyItemInserted(data.size - 1)
+                        // if (pageNumber > 1) recyclerView.adapter?.notifyItemInserted(data.size - 1)
                     }
+                    recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
                     if (pageNumber <= 1) {
-                        recyclerView.layoutManager?.scrollToPosition(0)
-                        (recyclerView.adapter as CodeRecyclerViewAdapter).notifyItemRangeInserted(0, 20)
+                        // recyclerView.layoutManager?.scrollToPosition(0)
+                        // (recyclerView.adapter as CodeRecyclerViewAdapter).notifyItemRangeInserted(0, 20)
                         swipeRefreshLayout.isRefreshing = false
                     }
                 }
