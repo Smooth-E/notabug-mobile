@@ -35,7 +35,7 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                     }
                 }
                 pageNumber++
-                val document = Jsoup.connect("${connectionUrl}?page=${pageNumber}").get()
+                val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=${pageNumber}"))
                 val list = document.getElementsByClass("ui user list")[0]
                 for (user in list.getElementsByClass("item")) {
                     var imageUrl = user.getElementsByClass("ui avatar image")[0].attr("src")

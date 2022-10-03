@@ -25,17 +25,19 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
 
     abstract fun loadNewPage(isReloading: Boolean)
 
+    private fun reloadList() {
+        thread?.interrupt()
+        pageNumber = 0
+        loadNewPage(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         recyclerView = view.findViewById(R.id.recycler_view)
 
-        swipeRefreshLayout.setOnRefreshListener {
-            thread?.interrupt()
-            pageNumber = 0
-            loadNewPage(true)
-        }
+        swipeRefreshLayout.setOnRefreshListener { reloadList() }
 
         val adapter = getAdapter()
         recyclerView.setHasFixedSize(false)

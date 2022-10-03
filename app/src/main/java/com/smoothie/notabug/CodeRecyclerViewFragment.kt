@@ -1,6 +1,5 @@
 package com.smoothie.notabug
 
-import android.util.Log
 import org.jsoup.Jsoup
 
 open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>() {
@@ -30,7 +29,7 @@ open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerV
                     }
                 }
                 pageNumber++
-                val document = Jsoup.connect("${connectionUrl}?page=$pageNumber").get()
+                val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=$pageNumber"))
                 val repositories = document.body().getElementsByClass("ui repository list")[0]
                 for (element in repositories.getElementsByClass("item")) {
                     val header = element.getElementsByClass("ui header")[0]

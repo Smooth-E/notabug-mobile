@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,8 @@ class LoginActivity : AppCompatActivity() {
 
         textInputUsername = findViewById(R.id.text_input_username)
         textInputPassword = findViewById(R.id.text_input_password)
+
+        Utilities.initialize()
 
         val centeredDialogStyle = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 
