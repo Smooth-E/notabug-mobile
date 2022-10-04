@@ -19,4 +19,19 @@
         <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     </style>
 
+    <style name="Dialog.NotABugMobile.BottomSheetDialog" parent="Theme.NotABugMobile">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.NotABugMobile.BottomSheetDialog</item>
+    </style>
+
+    <style name="Animation.NotABugMobile.BottomSheetDialog" parent="Theme.NotABugMobile">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
 </resources>

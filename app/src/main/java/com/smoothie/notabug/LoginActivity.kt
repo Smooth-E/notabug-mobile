@@ -1,22 +1,19 @@
 package com.smoothie.notabug
 
-import android.content.Context
+import android.app.Dialog
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.WindowInsets
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.smoothie.notabug.view.InformativeBottomSheet
 
 class LoginActivity : AppCompatActivity() {
 
@@ -57,12 +54,14 @@ class LoginActivity : AppCompatActivity() {
                 .setMessage(R.string.description_credentials_handling_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_proceed) { dialog, _ ->
-                    val bottomSheet = InformativeBottomSheet()
-                    bottomSheet.iconResource = R.drawable.ic_baseline_open_in_browser_24
-                    bottomSheet.headerText = getString(R.string.label_logging_in)
-                    bottomSheet.supportiveText = getString(R.string.description_logging_in)
-                    bottomSheet.isCancelable = false
-                    bottomSheet.show(supportFragmentManager)
+                    val loadingDialog = Dialog(this, R.style.Dialog_NotABugMobile_BottomSheetDialog)
+                    loadingDialog.setContentView(R.layout.bottom_sheet_informative)
+                    loadingDialog.setCancelable(false)
+                    loadingDialog.window?.setGravity(Gravity.BOTTOM)
+                    loadingDialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    val paddingBottom = WindowInsets.CONSUMED.getInsets(WindowInsets.Type.navigationBars()).bottom
+                    loadingDialog.findViewById<View>(R.id.view_root).setPadding(0, 0, 0, paddingBottom)
+                    loadingDialog.show()
                     Thread {
                         try {
                             Utilities.post(
@@ -74,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                         catch (exception: Exception) {
                             exception.printStackTrace()
-                            bottomSheet.dismiss()
+                            loadingDialog.dismiss()
                         }
                     }
                     dialog.dismiss()

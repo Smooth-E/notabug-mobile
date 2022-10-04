@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- From ThemeOverlay.Material3.DynamicColors.Light -->
-    <style name="Theme.NotABugMobile" parent="Base.Theme.NotABugMobile" tools:ignore="PrivateResource">
+    <style name="Theme.NotABugMobile" parent="Theme.Material3.DayNight.NoActionBar" tools:ignore="PrivateResource">
         <!-- Color palettes -->
         <item name="colorPrimary">@color/m3_sys_color_dynamic_light_primary</item>
         <item name="colorOnPrimary">@color/m3_sys_color_dynamic_light_on_primary</item>
