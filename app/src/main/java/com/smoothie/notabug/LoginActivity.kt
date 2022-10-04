@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.smoothie.notabug.view.InformativeBottomSheet
 
 class LoginActivity : AppCompatActivity() {
 
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         val centeredDialogStyle = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 
         buttonLogin.setOnClickListener {
-            if (textInputUsername.editText!!.text.isEmpty() or textInputPassword.editText!!.text.isEmpty()) {
+            if (textInputUsername.editText!!.text.isEmpty() or textInputPassword.editText!!.text.isEmpty() and false) {
                 Snackbar.make(rootViewGroup, R.string.description_empty_fields, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -54,21 +55,20 @@ class LoginActivity : AppCompatActivity() {
                 .setMessage(R.string.description_credentials_handling_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_proceed) { dialog, _ ->
-                    val loadingDialog = Dialog(this, R.style.Dialog_NotABugMobile_BottomSheetDialog)
-                    loadingDialog.setContentView(R.layout.bottom_sheet_informative)
-                    loadingDialog.setCancelable(false)
-                    loadingDialog.window?.setGravity(Gravity.BOTTOM)
-                    loadingDialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    val paddingBottom = WindowInsets.CONSUMED.getInsets(WindowInsets.Type.navigationBars()).bottom
-                    loadingDialog.findViewById<View>(R.id.view_root).setPadding(0, 0, 0, paddingBottom)
-                    loadingDialog.show()
+                    val loadingDialog = InformativeBottomSheet(
+                        this,
+                        R.drawable.ic_baseline_open_in_browser_24,
+                        R.string.label_logging_in,
+                        R.string.description_logging_in
+                    )
+                    loadingDialog.show(rootViewGroup)
                     Thread {
                         try {
                             Utilities.post(
                                 "https://notabug.org/users/login",
                                 "user_name=${textInputUsername.editText?.text}&password=${textInputPassword.editText?.text}"
                             )
-                            startActivity(Intent(this, AuthorizedHubActivity::class.java))
+                            this.runOnUiThread { startActivity(Intent(this, AuthorizedHubActivity::class.java)) }
                             finish()
                         }
                         catch (exception: Exception) {
