@@ -20,6 +20,7 @@
     <string name="label_skip_login_dialog">Anonymous Browsing</string>
     <string name="label_search">Search</string>
     <string name="label_loading_entries">New entries are on the way!</string>
+    <string name="label_logging_in">Logging in</string>
 
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
@@ -50,6 +51,9 @@
         We are loading new entries.
         If it takes too long, ensure you are connected to the internet and your credentials were not updated outside of the app.
         If you sure that none of those statements is the case, you can restart the app to obtain new session identifier.
+    </string>
+    <string name="description_logging_in">
+        We are logging you in. This may take some time depending on your internet connection.
     </string>
 
     <string name="external_resources_icons8">https://icons8.com/</string>
