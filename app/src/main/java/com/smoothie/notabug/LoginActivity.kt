@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,42 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var textInputUsername : TextInputLayout
     private lateinit var textInputPassword: TextInputLayout
 
+    private fun loginWithSharedPrefs() {
+        val preferences = getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+        val username = preferences.getString("login", null)
+        val password = preferences.getString("password", null)
+        if (username.isNullOrEmpty() or password.isNullOrEmpty()) {
+            Log.w("loginWithSharedPrefs", "Password or username is empty.")
+            return
+        }
+        val loadingDialog = InformativeBottomSheet(
+            this,
+            R.drawable.ic_baseline_open_in_browser_24,
+            R.string.label_logging_in,
+            R.string.description_logging_in
+        )
+        loadingDialog.show()
+        Thread {
+            try {
+                Utilities.post(
+                    "https://notabug.org/user/login",
+                    "user_name=$username&password=$password"
+                )
+                this.runOnUiThread {
+                    loadingDialog.dismiss()
+                    startActivity(Intent(this, AuthorizedHubActivity::class.java))
+                    finish()
+                }
+            }
+            catch (exception: Exception) {
+                this.runOnUiThread {
+                    exception.printStackTrace()
+                    loadingDialog.dismiss()
+                }
+            }
+        }.start()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -45,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
         val centeredDialogStyle = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 
         buttonLogin.setOnClickListener {
-            if (textInputUsername.editText!!.text.isEmpty() or textInputPassword.editText!!.text.isEmpty() and false) {
+            if (textInputUsername.editText!!.text.isEmpty() or textInputPassword.editText!!.text.isEmpty()) {
                 Snackbar.make(rootViewGroup, R.string.description_empty_fields, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -55,27 +92,13 @@ class LoginActivity : AppCompatActivity() {
                 .setMessage(R.string.description_credentials_handling_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_proceed) { dialog, _ ->
-                    val loadingDialog = InformativeBottomSheet(
-                        this,
-                        R.drawable.ic_baseline_open_in_browser_24,
-                        R.string.label_logging_in,
-                        R.string.description_logging_in
-                    )
-                    loadingDialog.show(rootViewGroup)
-                    Thread {
-                        try {
-                            Utilities.post(
-                                "https://notabug.org/users/login",
-                                "user_name=${textInputUsername.editText?.text}&password=${textInputPassword.editText?.text}"
-                            )
-                            this.runOnUiThread { startActivity(Intent(this, AuthorizedHubActivity::class.java)) }
-                            finish()
-                        }
-                        catch (exception: Exception) {
-                            exception.printStackTrace()
-                            loadingDialog.dismiss()
-                        }
-                    }
+                    val username = textInputUsername.editText?.text.toString()
+                    val password = textInputPassword.editText?.text.toString()
+                    val editor = getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit()
+                    editor.putString("login", username)
+                    editor.putString("password", password)
+                    editor.apply()
+                    loginWithSharedPrefs()
                     dialog.dismiss()
                 }
                 .show()
@@ -108,5 +131,8 @@ class LoginActivity : AppCompatActivity() {
                 }
                 .show()
         }
+
+        loginWithSharedPrefs()
     }
+
 }

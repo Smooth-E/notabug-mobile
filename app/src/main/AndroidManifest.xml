@@ -32,8 +32,13 @@
 
         <activity
             android:name=".AnonymousHubActivity"
-            android:exported="true"
+            android:exported="false"
             android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".AuthorizedHubActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
 
     </application>
 

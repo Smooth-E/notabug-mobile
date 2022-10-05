@@ -11,6 +11,8 @@ import java.net.CookiePolicy
 class Utilities {
     companion object {
 
+        const val SHARED_PREFERENCES_NAME = "com.smoothie.notabug.preferences"
+
         private val MEDIA_TYPE_FORM_URLENCODED = "application/x-www-form-urlencoded".toMediaType()
 
         private lateinit var client: OkHttpClient

@@ -77,7 +77,7 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                     for (index in textNodes.indices) {
                         val text = textNodes[index].text().trim()
                         when(val className = icons[index].className()) {
-                            "octicon octicon-email" -> email = text
+                            "octicon octicon-mail" -> email = text
                             "octicon octicon-location" -> location = text
                             "octicon octicon-clock" -> joinDate = text
                             else -> throw IllegalArgumentException("Unexpected icon class: $className")

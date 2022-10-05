@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
+import android.view.WindowInsets.Type
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -87,17 +88,17 @@ class InformativeBottomSheet(context: Context) : Dialog(context, R.style.Dialog_
     }
 
     override fun show() {
-        this.show(window?.decorView!!)
-    }
-
-    fun show(rootView: View) {
         super.show()
         window?.setGravity(Gravity.BOTTOM)
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        val paddingBottom = rootView.rootWindowInsets.stableInsetBottom
-        viewRoot.setPadding(0, 0, 0, paddingBottom)
         oldNavigationBarColor = window!!.navigationBarColor
         window?.navigationBarColor = navigationBarColor
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        val paddingBottom = window!!.decorView.rootWindowInsets.stableInsetBottom
+        viewRoot.setPadding(0, 0, 0, paddingBottom)
     }
 
     override fun dismiss() {
