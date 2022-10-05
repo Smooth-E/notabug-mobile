@@ -7,6 +7,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.net.CookieManager
 import java.net.CookiePolicy
+import java.net.SocketTimeoutException
 
 class Utilities {
     companion object {
@@ -33,24 +34,43 @@ class Utilities {
             isInitialized = true
         }
 
-        fun get(url: String): String {
-            val request = Request.Builder().url(url).build()
-            client.newCall(request).execute().use { response ->
-                if (response.isSuccessful) return response.body!!.string()
-                else throw IOException("Request not successful.\n$request\n$response")
+        fun get(url: String, retryOnTimeout: Boolean): String {
+            while(true) {
+                try {
+                    val request = Request.Builder().url(url).build()
+                    client.newCall(request).execute().use { response ->
+                        if (response.isSuccessful) return response.body!!.string()
+                        else throw IOException("Request not successful.\n$request\n$response")
+                    }
+                } catch (exception: SocketTimeoutException) {
+                    if (!retryOnTimeout) throw exception
+                    else Log.d("Utilities.get(...)","Encountered SocketTimeoutException.\n${exception.stackTrace}")
+                }
             }
         }
 
-        fun post(url: String, body:String): String {
-            val request = Request.Builder()
-                .url(url)
-                .post(body.toRequestBody(MEDIA_TYPE_FORM_URLENCODED))
-                .build()
-            client.newCall(request).execute().use { response ->
-                if (response.isSuccessful) return response.body!!.string()
-                else throw IOException("Request not successful.\n$request\n$response")
+        fun get(url: String) = get(url, true)
+
+        fun post(url: String, body:String, retryOnTimeout: Boolean): String {
+            while(true) {
+                try {
+                    val request = Request.Builder()
+                        .url(url)
+                        .post(body.toRequestBody(MEDIA_TYPE_FORM_URLENCODED))
+                        .build()
+                    client.newCall(request).execute().use { response ->
+                        if (response.isSuccessful) return response.body!!.string()
+                        else throw IOException("Request not successful.\n$request\n$response")
+                    }
+                }
+                catch (exception: SocketTimeoutException) {
+                    if (!retryOnTimeout) throw exception
+                    else Log.d("Utilities.post(...)","Encountered SocketTimeoutException.\n${exception.stackTrace}")
+                }
             }
         }
+
+        fun post(url: String, body: String) = post(url, body, true)
 
     }
 }

@@ -124,7 +124,6 @@ class LoginActivity : AppCompatActivity() {
                 .setMessage(R.string.description_skip_login_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_continue) { dialog, _ ->
-                    // TODO: Implement anonymous browsing
                     dialog.dismiss()
                     this.startActivity(Intent(this, AnonymousHubActivity::class.java))
                     this.finish()
