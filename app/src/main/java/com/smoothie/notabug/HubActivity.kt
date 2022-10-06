@@ -35,12 +35,26 @@ abstract class HubActivity(private val menuResource: Int, private val launchTabI
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar)
         fragmentContainer = findViewById(R.id.fragment_container_view)
 
-        fragmentContainer.doOnAttach { it.setPadding(it.paddingLeft, systemBarInsets.top + it.paddingTop, it.paddingRight, it.paddingBottom) }
+        fragmentContainer.doOnAttach {
+            it.setPadding(
+                it.paddingLeft,
+                systemBarInsets.top + it.paddingTop,
+                it.paddingRight,
+                it.paddingBottom
+            )
+        }
 
-        bottomNavigationBar.doOnAttach { it.setPadding(it.paddingLeft, it.paddingTop, it.paddingRight, systemBarInsets.bottom + it.paddingBottom) }
+        bottomNavigationBar.doOnAttach {
+            it.setPadding(
+                it.paddingLeft,
+                it.paddingTop,
+                it.paddingRight,
+                systemBarInsets.bottom + it.paddingBottom
+            )
+        }
         bottomNavigationBar.inflateMenu(menuResource)
         bottomNavigationBar.setOnItemSelectedListener { item ->
-            performTransaction(item.itemId)
+            if (bottomNavigationBar.selectedItemId != item.itemId) performTransaction(item.itemId)
             true
         }
 
