@@ -12,10 +12,23 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-abstract class PagerFragment(
-    private val tabIconResources: Array<Int>,
-    private val tabNameResources: Array<Int>
-) : FadingFragment(R.layout.fragment_pager) {
+abstract class PagerFragment : FadingFragment {
+
+    private val hasNames: Boolean
+    private var tabIconResources: Array<Int>
+    private lateinit var tabNameResources: Array<Int>
+
+
+    constructor(tabIconResources: Array<Int>, tabNameResources: Array<Int>) : super(R.layout.fragment_pager) {
+        this.hasNames = true
+        this.tabIconResources = tabIconResources.clone()
+        this.tabNameResources = tabNameResources.clone()
+    }
+
+    constructor(tabIconResources: Array<Int>) : super(R.layout.fragment_pager) {
+        this.hasNames = false
+        this.tabIconResources = tabIconResources.clone()
+    }
 
     protected abstract fun getFragment(tabPosition: Int): Fragment
 
@@ -36,8 +49,9 @@ abstract class PagerFragment(
         val adapter = StateAdapter(childFragmentManager, lifecycle)
         viewPager2.adapter = adapter
         viewPager2.isUserInputEnabled = false
+        tabLayout.tabMode = TabLayout.MODE_AUTO
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.setText(tabNameResources[position])
+            if (hasNames) tab.setText(tabNameResources[position])
             tab.setIcon(tabIconResources[position])
         }.attach()
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }

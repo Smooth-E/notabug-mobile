@@ -10,6 +10,7 @@
     <string name="tab_explore">Explore</string>
     <string name="tab_communication">Communication</string>
     <string name="tab_profile">Profile</string>
+    <string name="tab_empty"></string>
 
     <string name="app_name">NotABug Mobile</string>
     <string name="label_website_name">NotABug.org</string>

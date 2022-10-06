@@ -14,12 +14,6 @@ class ExplorePagerFragment : PagerFragment(
         R.drawable.ic_baseline_collections_bookmark_24,
         R.drawable.ic_baseline_person_24,
         R.drawable.ic_baseline_groups_24
-    ),
-    arrayOf(
-        R.string.tab_repositories,
-        R.string.tab_mirrors,
-        R.string.tab_users,
-        R.string.tab_organizations
     )) {
     override fun getFragment(tabPosition: Int): Fragment {
         return when (tabPosition) {
