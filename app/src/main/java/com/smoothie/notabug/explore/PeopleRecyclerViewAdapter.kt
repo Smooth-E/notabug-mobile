@@ -16,7 +16,7 @@ class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: Arra
         val website: String,
         val location: String,
         val joinDate: String
-    )
+    ) : java.io.Serializable
 
     override fun getListItemView(context: Context) = EntityListItem(context)
 

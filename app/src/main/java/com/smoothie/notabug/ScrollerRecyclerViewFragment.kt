@@ -1,13 +1,25 @@
 package com.smoothie.notabug
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.enableSavedStateHandles
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
-abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerView.Adapter<*>, DataHolderType>
+abstract class ScrollerRecyclerViewFragment<
+        RecyclerViewAdapterType: RecyclerView.Adapter<*>,
+        DataHolderType: java.io.Serializable
+        >(private val itemsOnPage: Int)
     : FadingFragment(R.layout.fragment_refreshable_recycler) {
+
+    companion object {
+        private val ITEM_LAST_LOADED_PAGE = "LAST_LOADED_PAGE"
+        private val ITEM_LIST_DATA = "LIST_DATA"
+    }
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
@@ -31,6 +43,18 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
         loadNewPage(true)
     }
 
+    /*
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            pageNumber = savedInstanceState.getInt(ITEM_LAST_LOADED_PAGE)
+            val savedData = savedInstanceState.getSerializable(ITEM_LIST_DATA) as ArrayList<DataHolderType>
+            for (element in savedData) data.add(element)
+        }
+        else Log.w("State is null", "State is null")
+    }
+     */
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,6 +68,18 @@ abstract class ScrollerRecyclerViewFragment<RecyclerViewAdapterType: RecyclerVie
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
-        loadNewPage()
+        if (pageNumber == 0) loadNewPage()
     }
+
+    /*
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val dataToSave : ArrayList<DataHolderType> = ArrayList()
+        for (index in 0 until pageNumber * itemsOnPage - itemsOnPage)
+            dataToSave.add(data[index])
+        outState.putSerializable(ITEM_LIST_DATA, dataToSave)
+        outState.putInt(ITEM_LAST_LOADED_PAGE, pageNumber - 1)
+    }
+     */
+    
 }

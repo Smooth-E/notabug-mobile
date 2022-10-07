@@ -7,7 +7,7 @@ import com.smoothie.notabug.view.RepositoryListItem
 class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayList<DataHolder>)
     : RecyclerViewWithFooterAdapter<CodeRecyclerViewAdapter.DataHolder, CodeRecyclerViewFragment, RepositoryListItem>(fragment, data) {
 
-    data class DataHolder (
+    data class DataHolder(
         val url: String,
         val icon : Int,
         val name : String,
@@ -15,7 +15,7 @@ class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayLis
         val modificationDate: String,
         val stars: Int,
         val forks: Int
-        )
+        ) : java.io.Serializable
 
     override fun getListItemView(context: Context): RepositoryListItem = RepositoryListItem(context)
 
