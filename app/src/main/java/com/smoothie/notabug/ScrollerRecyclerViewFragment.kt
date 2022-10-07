@@ -81,5 +81,5 @@ abstract class ScrollerRecyclerViewFragment<
         outState.putInt(ITEM_LAST_LOADED_PAGE, pageNumber - 1)
     }
      */
-    
+
 }

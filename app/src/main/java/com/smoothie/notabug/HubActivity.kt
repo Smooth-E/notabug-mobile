@@ -15,9 +15,12 @@ import com.google.android.material.elevation.SurfaceColors
 
 abstract class HubActivity(private val menuResource: Int, private val launchTabId: Int) : LimitlessActivity() {
 
+    companion object {
+        private val KEY_SELECTED_TAB = "SelectedTabID"
+    }
+
     private lateinit var bottomNavigationBar : BottomNavigationView
     private lateinit var fragmentContainer : FragmentContainerView
-
 
     protected abstract fun getFragment(itemId: Int): FadingFragment
 
@@ -58,7 +61,20 @@ abstract class HubActivity(private val menuResource: Int, private val launchTabI
             true
         }
 
+        bottomNavigationBar.selectedItemId = launchTabId
         performTransaction(launchTabId)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val selectedItemID = savedInstanceState.getInt(KEY_SELECTED_TAB)
+        bottomNavigationBar.selectedItemId = selectedItemID
+        performTransaction(selectedItemID)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_SELECTED_TAB, bottomNavigationBar.selectedItemId)
     }
 
 }
