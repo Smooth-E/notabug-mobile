@@ -9,11 +9,17 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnAttach
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.elevation.SurfaceColors
 
-abstract class HubActivity(private val menuResource: Int, private val launchTabId: Int) : LimitlessActivity() {
+abstract class HubActivity(
+    private val menuResource: Int,
+    private val fragments: Array<Triple<Int, FadingFragment, String>>
+    ) : LimitlessActivity() {
+
+
 
     companion object {
         private val KEY_SELECTED_TAB = "SelectedTabID"
@@ -22,13 +28,14 @@ abstract class HubActivity(private val menuResource: Int, private val launchTabI
     private lateinit var bottomNavigationBar : BottomNavigationView
     private lateinit var fragmentContainer : FragmentContainerView
 
-    protected abstract fun getFragment(itemId: Int): FadingFragment
-
     private fun performTransaction(bottomBarItemId: Int) {
-        supportFragmentManager.beginTransaction()
-            .setReorderingAllowed(true)
-            .replace(R.id.fragment_container_view, getFragment(bottomBarItemId))
-            .commit()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true)
+        for (pair in fragments) {
+            if (pair.first == bottomBarItemId) transaction.show(pair.second)
+            else transaction.hide(pair.second)
+        }
+        transaction.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +68,20 @@ abstract class HubActivity(private val menuResource: Int, private val launchTabI
             true
         }
 
-        bottomNavigationBar.selectedItemId = launchTabId
-        performTransaction(launchTabId)
+        Log.w("The amount of fragments", supportFragmentManager.fragments.size.toString())
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true)
+        for (triple in fragments) {
+            val fragment = supportFragmentManager.findFragmentByTag(triple.third)
+            if (fragment != null) transaction.remove(fragment)
+            transaction.add(R.id.fragment_container_view, triple.second, triple.third)
+            transaction.hide(triple.second)
+        }
+        transaction.commit()
+
+        bottomNavigationBar.selectedItemId = fragments[0].first
+        performTransaction(bottomNavigationBar.selectedItemId)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
