@@ -43,18 +43,6 @@ abstract class ScrollerRecyclerViewFragment<
         loadNewPage(true)
     }
 
-    /*
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
-            pageNumber = savedInstanceState.getInt(ITEM_LAST_LOADED_PAGE)
-            val savedData = savedInstanceState.getSerializable(ITEM_LIST_DATA) as ArrayList<DataHolderType>
-            for (element in savedData) data.add(element)
-        }
-        else Log.w("State is null", "State is null")
-    }
-     */
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,16 +58,5 @@ abstract class ScrollerRecyclerViewFragment<
 
         if (pageNumber == 0) loadNewPage()
     }
-
-    /*
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val dataToSave : ArrayList<DataHolderType> = ArrayList()
-        for (index in 0 until pageNumber * itemsOnPage - itemsOnPage)
-            dataToSave.add(data[index])
-        outState.putSerializable(ITEM_LIST_DATA, dataToSave)
-        outState.putInt(ITEM_LAST_LOADED_PAGE, pageNumber - 1)
-    }
-     */
 
 }
