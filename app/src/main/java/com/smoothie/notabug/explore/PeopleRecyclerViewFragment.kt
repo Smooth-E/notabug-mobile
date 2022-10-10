@@ -71,9 +71,12 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                     var location = ""
                     var joinDate = ""
                     textNodes.removeAll { it.isBlank }
-                    icons.removeAll { it.className() == "octicon octicon-link" }
-                    val possiblyWebsite = description.getElementsByTag("a")
-                    if (possiblyWebsite.size > 0) website = possiblyWebsite[0].attr("href")
+                    icons.removeAll { it.className() == "octicon octicon-link" || it.className() == "octicon octicon-mail" }
+                    val urlElements = description.getElementsByTag("a")
+                    for (element in urlElements) {
+                        if (element.attr("href").startsWith("mailto:")) email = element.text()
+                        else website = element.text()
+                    }
                     for (index in textNodes.indices) {
                         val text = textNodes[index].text().trim()
                         when(val className = icons[index].className()) {
