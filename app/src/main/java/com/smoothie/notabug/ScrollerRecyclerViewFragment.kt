@@ -2,6 +2,7 @@ package com.smoothie.notabug
 
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,14 @@ abstract class ScrollerRecyclerViewFragment<
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         recyclerView = view.findViewById(R.id.recycler_view)
 
+        val typedValueSurface = TypedValue()
+        val typedValueOnSurface = TypedValue()
+        val typedValueSecondaryContainer = TypedValue()
+        requireContext().theme.resolveAttribute(com.google.android.material.R.attr.colorSurface, typedValueSurface, true)
+        requireContext().theme.resolveAttribute(com.google.android.material.R.attr.colorOnSurface, typedValueOnSurface, true)
+        requireContext().theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValueSecondaryContainer, true)
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(typedValueSurface.data)
+        swipeRefreshLayout.setColorSchemeColors(typedValueOnSurface.data, typedValueSecondaryContainer.data)
         swipeRefreshLayout.setOnRefreshListener { reloadList() }
 
         val adapter = getAdapter()
