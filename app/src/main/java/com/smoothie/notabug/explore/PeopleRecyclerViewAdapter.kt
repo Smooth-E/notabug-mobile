@@ -29,7 +29,7 @@ class PeopleRecyclerViewAdapter(fragment: PeopleRecyclerViewFragment, data: Arra
         view.website = data.website
         view.location = data.location
         view.joinDate = data.joinDate
-        if (position == 20 * getFragment().obtainPageNumber() - 10 - 1) getFragment().loadNewPage()
+        if (continueLoading && position == 20 * getFragment().obtainPageNumber() - 10 - 1) getFragment().loadNewPage()
     }
 
 }

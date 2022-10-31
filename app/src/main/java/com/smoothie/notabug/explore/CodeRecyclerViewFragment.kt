@@ -1,7 +1,10 @@
 package com.smoothie.notabug.explore
 
+import android.opengl.Visibility
 import android.view.View
+import androidx.core.view.children
 import com.smoothie.notabug.R
+import com.smoothie.notabug.RecyclerViewWithFooterAdapter
 import com.smoothie.notabug.ScrollerRecyclerViewFragment
 import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
@@ -11,7 +14,7 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
 
     protected open val iconResource = R.drawable.ic_baseline_class_24
 
-    override fun getAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
+    override fun createAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
 
     override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
 
@@ -36,7 +39,9 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
                 pageNumber++
                 val document = Jsoup.parse(Utilities.get("$connectionUrl?page=$pageNumber&q=$searchQuery"))
                 val repositories = document.body().getElementsByClass("ui repository list")[0]
-                for (element in repositories.getElementsByClass("item")) {
+                val itemElements = repositories.getElementsByClass("item")
+                if (itemElements.size < 20) (recyclerView.adapter as RecyclerViewWithFooterAdapter<*, *, *>).stopLoadingNewPages()
+                for (element in itemElements) {
                     val header = element.getElementsByClass("ui header")[0]
                     val name = element.getElementsByClass("name")[0]
                     val stats = header.getElementsByClass("ui right metas")[0].getElementsByTag("span")
@@ -54,9 +59,10 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
                 }
                 activity?.runOnUiThread {
                     if (data.size > 0) {
-                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
+                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, itemElements.size)
                         recyclerView.visibility = View.VISIBLE
                         nothingFoundWarning.visibility = View.GONE
+                        if (itemElements.size < 20) recyclerView.children.elementAt(recyclerView.childCount - 1).visibility = View.GONE
                     }
                     else {
                         recyclerView.visibility = View.GONE

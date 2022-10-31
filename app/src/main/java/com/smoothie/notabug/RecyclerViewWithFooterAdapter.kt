@@ -1,6 +1,7 @@
 package com.smoothie.notabug
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListItemViewType: View>(
     private val fragment: FragmentType,
-    private val dataSet: ArrayList<DataHolderType>
-    ) : RecyclerView.Adapter<ViewHolder>() {
+    private val dataSet: ArrayList<DataHolderType>,
+    protected var continueLoading: Boolean = true
+) : RecyclerView.Adapter<ViewHolder>() {
 
     protected inner class ViewHolderItem<ViewType: ListItemViewType>(view: ViewType) : ViewHolder(view) {
         val view: ViewType
@@ -36,8 +38,11 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (viewType == TYPE_FOOTER) {
-            return ViewHolderFooter(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.view_list_footer, parent, false))
+            val footer = LayoutInflater.from(parent.context)
+                .inflate(R.layout.view_list_footer, parent, false)
+            Log.d("continue", continueLoading.toString())
+            if (!continueLoading) footer.visibility = View.GONE
+            return ViewHolderFooter(footer)
         }
         val view = getListItemView(parent.context)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -52,6 +57,10 @@ abstract class RecyclerViewWithFooterAdapter<DataHolderType, FragmentType, ListI
     protected fun getFragment() = fragment
 
     protected abstract fun onBindItemViewHolder(view: ListItemViewType, position: Int)
+
+    fun stopLoadingNewPages() {
+        continueLoading = false
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position != dataSet.size) onBindItemViewHolder((holder as ViewHolderItem<ListItemViewType>).view, position)

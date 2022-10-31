@@ -1,10 +1,8 @@
 package com.smoothie.notabug
 
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,14 +21,14 @@ abstract class ScrollerRecyclerViewFragment<
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var nothingFoundWarning: LinearLayout
     protected var thread: Thread? = null
-
     protected var data: ArrayList<DataHolderType> = ArrayList()
-
     protected var pageNumber = 0
+
+    private lateinit var adapter: RecyclerViewAdapterType
 
     fun obtainPageNumber() = pageNumber
 
-    protected abstract fun getAdapter(): RecyclerViewAdapterType
+    protected abstract fun createAdapter(): RecyclerViewAdapterType
 
     fun loadNewPage() = loadNewPage(false)
 
@@ -62,7 +60,7 @@ abstract class ScrollerRecyclerViewFragment<
         swipeRefreshLayout.setColorSchemeColors(typedValueOnSurface.data, typedValueSecondaryContainer.data)
         swipeRefreshLayout.setOnRefreshListener { reloadList() }
 
-        val adapter = getAdapter()
+        adapter = createAdapter()
         recyclerView.setHasFixedSize(false)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

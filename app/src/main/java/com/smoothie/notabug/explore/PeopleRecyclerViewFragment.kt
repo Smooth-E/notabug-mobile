@@ -5,7 +5,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.children
 import com.smoothie.notabug.R
+import com.smoothie.notabug.RecyclerViewWithFooterAdapter
 import com.smoothie.notabug.ScrollerRecyclerViewFragment
 import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
@@ -16,7 +18,7 @@ import java.net.URL
 open class PeopleRecyclerViewFragment(searchQuery: String) :
     ScrollerRecyclerViewFragment<PeopleRecyclerViewAdapter, PeopleRecyclerViewAdapter.DataHolder>(20, searchQuery) {
 
-    override fun getAdapter() = PeopleRecyclerViewAdapter(this, data)
+    override fun createAdapter() = PeopleRecyclerViewAdapter(this, data)
 
     override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
 
@@ -40,7 +42,9 @@ open class PeopleRecyclerViewFragment(searchQuery: String) :
                 pageNumber++
                 val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=${pageNumber}&q=${searchQuery}"))
                 val list = document.getElementsByClass("ui user list")[0]
-                for (user in list.getElementsByClass("item")) {
+                val userElements = list.getElementsByClass("item")
+                if (userElements.size < 20) (recyclerView.adapter as RecyclerViewWithFooterAdapter<*, *, *>).stopLoadingNewPages()
+                for (user in userElements) {
                     var imageUrl = user.getElementsByClass("ui avatar image")[0].attr("src")
                     if (imageUrl.startsWith("/")) imageUrl = "https://notabug.org$imageUrl"
                     val profilePicture =
@@ -102,9 +106,10 @@ open class PeopleRecyclerViewFragment(searchQuery: String) :
                 }
                 activity?.runOnUiThread {
                     if (data.size > 0) {
-                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
+                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, userElements.size)
                         recyclerView.visibility = View.VISIBLE
                         nothingFoundWarning.visibility = View.GONE
+                        if (userElements.size < 20) recyclerView.children.elementAt(recyclerView.childCount - 1).visibility = View.GONE
                     }
                     else {
                         recyclerView.visibility = View.GONE
