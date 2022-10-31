@@ -5,7 +5,8 @@ import com.smoothie.notabug.ScrollerRecyclerViewFragment
 import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
 
-open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>(20) {
+open class CodeRecyclerViewFragment(searchQuery: String) :
+    ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>(20, searchQuery) {
 
     protected open val iconResource = R.drawable.ic_baseline_class_24
 

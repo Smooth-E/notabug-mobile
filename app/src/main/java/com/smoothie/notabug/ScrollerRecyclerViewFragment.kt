@@ -1,6 +1,7 @@
 package com.smoothie.notabug
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,11 +11,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 abstract class ScrollerRecyclerViewFragment<
         RecyclerViewAdapterType: RecyclerView.Adapter<*>,
         DataHolderType: java.io.Serializable
-        >(private val itemsOnPage: Int)
+        >(private val itemsOnPage: Int, protected var searchQuery: String)
     : FadingFragment(R.layout.fragment_refreshable_recycler) {
 
     protected open val connectionUrl = "https://notabug.org"
-    protected open var searchQuery = ""
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
@@ -23,6 +23,10 @@ abstract class ScrollerRecyclerViewFragment<
     protected var data: ArrayList<DataHolderType> = ArrayList()
 
     protected var pageNumber = 0
+
+    private var viewCreated = false
+
+    fun isViewCreated() = viewCreated
 
     fun obtainPageNumber() = pageNumber
 
@@ -38,8 +42,8 @@ abstract class ScrollerRecyclerViewFragment<
         loadNewPage(true)
     }
 
-    fun reloadWithQuery(query: String) {
-        searchQuery = query
+    fun reloadQuery(query: String) {
+        this.searchQuery = query
         reloadList()
     }
 
@@ -48,6 +52,8 @@ abstract class ScrollerRecyclerViewFragment<
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         recyclerView = view.findViewById(R.id.recycler_view)
+
+        viewCreated = true
 
         val typedValueSurface = TypedValue()
         val typedValueOnSurface = TypedValue()

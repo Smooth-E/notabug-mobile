@@ -12,7 +12,8 @@ import org.jsoup.nodes.TextNode
 import java.io.InterruptedIOException
 import java.net.URL
 
-open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyclerViewAdapter, PeopleRecyclerViewAdapter.DataHolder>(20) {
+open class PeopleRecyclerViewFragment(searchQuery: String) :
+    ScrollerRecyclerViewFragment<PeopleRecyclerViewAdapter, PeopleRecyclerViewAdapter.DataHolder>(20, searchQuery) {
 
     override fun getAdapter() = PeopleRecyclerViewAdapter(this, data)
 

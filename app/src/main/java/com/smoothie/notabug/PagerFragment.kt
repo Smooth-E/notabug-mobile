@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -35,15 +32,35 @@ abstract class PagerFragment : FadingFragment {
         this.tabIconResources = tabIconResources.clone()
     }
 
-    protected abstract fun getFragment(tabPosition: Int): Fragment
+    protected abstract fun getFragment(tabPosition: Int, searchQuery: String): Fragment
 
-    inner class StateAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
-        : FragmentStateAdapter(fragmentManager, lifecycle) {
+    inner class StateAdapter : FragmentStateAdapter {
+
+        private var searchQuery: String
+        private var items = ArrayList<Fragment>()
+
+        constructor(fragmentManager: FragmentManager, lifecycle: Lifecycle, searchQuery: String = "") : super(fragmentManager, lifecycle) {
+            this.searchQuery = searchQuery
+            for (i in tabIconResources.indices) items.add(getFragment(i, ""))
+        }
+
+        fun changeQuery(query: String) {
+            this.searchQuery = query
+            for (fragment in items) fragment.onDestroyView()
+            items.clear()
+            //notifyItemRangeRemoved(0, itemCount)
+            for (i in 0 until itemCount) items.add(getFragment(i, query))
+            notifyItemRangeChanged(0, itemCount)
+        }
 
         override fun getItemCount(): Int = tabIconResources.size
 
-        override fun createFragment(position: Int) = getFragment(position)
+        override fun createFragment(position: Int): Fragment {
+            Log.d("creteFragment()", "Called with position: $position")
+            return items[position]
+        }
 
+        override fun getItemId(position: Int): Long = if (position < items.size) items[position].hashCode().toLong() else "NO ID".hashCode().toLong()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,10 +80,7 @@ abstract class PagerFragment : FadingFragment {
         pillSearchBarView.setOnSearchListener(object:PillSearchBarView.PillSearchExecuteListener {
             override fun performSearch(query: String) {
                 Log.d("TAG", "Reloading with: $query")
-                for (i in tabIconResources.indices) {
-                    val fragment = getFragment(i)
-                    if (fragment is ScrollerRecyclerViewFragment<*, *>) fragment.reloadWithQuery(query)
-                }
+                (viewPager2.adapter as StateAdapter).changeQuery(query)
             }
         })
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }

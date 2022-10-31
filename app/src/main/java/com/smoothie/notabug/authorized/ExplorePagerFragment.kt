@@ -15,12 +15,12 @@ class ExplorePagerFragment : PagerFragment(
         R.drawable.ic_baseline_person_24,
         R.drawable.ic_baseline_groups_24
     )) {
-    override fun getFragment(tabPosition: Int): Fragment {
+    override fun getFragment(tabPosition: Int, searchQuery: String): Fragment {
         return when (tabPosition) {
-            0 -> RepositoriesFragment()
-            1 -> MirrorsFragment()
-            2 -> UsersFragment()
-            3 -> OrganizationsFragment()
+            0 -> RepositoriesFragment(searchQuery)
+            1 -> MirrorsFragment(searchQuery)
+            2 -> UsersFragment(searchQuery)
+            3 -> OrganizationsFragment(searchQuery)
             else -> throw IllegalArgumentException("Unexpected tab position $tabPosition")
         }
     }
