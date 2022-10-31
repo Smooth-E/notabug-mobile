@@ -1,12 +1,8 @@
 package com.smoothie.notabug
 
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.enableSavedStateHandles
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,11 +12,6 @@ abstract class ScrollerRecyclerViewFragment<
         DataHolderType: java.io.Serializable
         >(private val itemsOnPage: Int)
     : FadingFragment(R.layout.fragment_refreshable_recycler) {
-
-    companion object {
-        private val ITEM_LAST_LOADED_PAGE = "LAST_LOADED_PAGE"
-        private val ITEM_LIST_DATA = "LIST_DATA"
-    }
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
