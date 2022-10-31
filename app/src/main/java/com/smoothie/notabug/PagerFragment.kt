@@ -38,7 +38,7 @@ abstract class PagerFragment : FadingFragment {
 
     protected abstract fun getFragment(tabPosition: Int, searchQuery: String): Fragment
 
-    protected abstract fun createInstance(): PagerFragment
+    protected abstract fun createInstance(searchQuery: String): PagerFragment
 
     protected abstract fun getInstance(): PagerFragment
 
@@ -67,7 +67,7 @@ abstract class PagerFragment : FadingFragment {
         pillSearchBarView.setOnSearchListener(object:PillSearchBarView.PillSearchExecuteListener {
             override fun performSearch(query: String) {
                 Log.d("TAG", "Reloading with: $query")
-                (getActivity() as HubActivity).replaceFragment(getInstance(), createInstance())
+                (activity as HubActivity).replaceFragment(getInstance(), createInstance(query))
             }
         })
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }

@@ -51,7 +51,7 @@ class PillSearchBarView : FrameLayout {
 
         icon = findViewById(R.id.icon)
         editText = findViewById(R.id.edit_text)
-        button = findViewById(R.id.button)
+        button = findViewById(R.id.button_execute)
 
         button.visibility = View.GONE
         editText.addTextChangedListener { text ->

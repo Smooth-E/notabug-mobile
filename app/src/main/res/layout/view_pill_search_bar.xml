@@ -36,16 +36,31 @@
         android:textColor="?colorSecondary"
         android:textColorHint="?colorSecondary"
         app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintEnd_toStartOf="@id/button"
+        app:layout_constraintEnd_toStartOf="@id/button_execute"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/button"
+        android:id="@+id/button_execute"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:padding="2dp"
         android:src="@drawable/ic_round_chevron_right_24"
+        app:tint="?colorSecondary"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/button_clear"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_round_cancel_24"
         app:tint="?colorSecondary"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:focusable="true"

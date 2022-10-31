@@ -11,7 +11,7 @@ class PeopleFragment(searchQuery: String = "") : PagerFragment(
     searchQuery
 ) {
 
-    override fun createInstance(): PagerFragment = PeopleFragment(searchQuery)
+    override fun createInstance(searchQuery: String): PagerFragment = PeopleFragment(searchQuery)
 
     override fun getInstance(): PagerFragment = this
 

@@ -45,11 +45,7 @@ abstract class HubActivity(
         val transaction = supportFragmentManager.beginTransaction()
         transaction.setReorderingAllowed(true)
         transaction.remove(old)
-        transaction.add(replacement, triple.third)
-        for (fragment in fragments) {
-            if (fragment.second == replacement) transaction.show(fragment.second)
-            else transaction.hide(fragment.second)
-        }
+        transaction.add(R.id.fragment_container_view, replacement, triple.third)
         transaction.commit()
     }
 

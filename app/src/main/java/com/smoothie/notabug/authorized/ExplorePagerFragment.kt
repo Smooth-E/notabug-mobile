@@ -21,7 +21,7 @@ class ExplorePagerFragment(searchQuery: String = "") : PagerFragment(
 
     override fun getInstance(): PagerFragment = this
 
-    override fun createInstance(): PagerFragment = ExplorePagerFragment(searchQuery)
+    override fun createInstance(searchQuery: String): PagerFragment = ExplorePagerFragment(searchQuery)
 
     override fun getFragment(tabPosition: Int, searchQuery: String): Fragment {
         return when (tabPosition) {
