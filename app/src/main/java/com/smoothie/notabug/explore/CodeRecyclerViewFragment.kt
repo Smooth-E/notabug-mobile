@@ -1,5 +1,6 @@
 package com.smoothie.notabug.explore
 
+import android.view.View
 import com.smoothie.notabug.R
 import com.smoothie.notabug.ScrollerRecyclerViewFragment
 import com.smoothie.notabug.Utilities
@@ -27,6 +28,7 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
                 if (isReloading) {
                     val size = data.size
                     activity?.runOnUiThread {
+                        recyclerView.visibility = View.VISIBLE
                         for (index in 0 until size) data.removeFirst()
                         recyclerView.adapter?.notifyItemRangeRemoved(0, size)
                     }
@@ -51,7 +53,15 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
                     activity?.runOnUiThread { data.add(holder) }
                 }
                 activity?.runOnUiThread {
-                    recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
+                    if (data.size > 0) {
+                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
+                        recyclerView.visibility = View.VISIBLE
+                        nothingFoundWarning.visibility = View.GONE
+                    }
+                    else {
+                        recyclerView.visibility = View.GONE
+                        nothingFoundWarning.visibility = View.VISIBLE
+                    }
                     if (pageNumber <= 1) {
                         // Scroll manually or else recycler scrolls to the bottom automatically
                         recyclerView.layoutManager?.scrollToPosition(0)

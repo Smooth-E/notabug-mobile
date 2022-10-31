@@ -3,6 +3,7 @@ package com.smoothie.notabug.explore
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
+import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.smoothie.notabug.R
 import com.smoothie.notabug.ScrollerRecyclerViewFragment
@@ -97,11 +98,21 @@ open class PeopleRecyclerViewFragment(searchQuery: String) :
                                 joinDate = joinDate
                             )
                         )
-                        recyclerView.adapter?.notifyItemInserted(data.size - 1)
                     }
                 }
-                if (pageNumber <= 1) {
-                    activity?.runOnUiThread {
+                activity?.runOnUiThread {
+                    if (data.size > 0) {
+                        recyclerView.adapter?.notifyItemRangeInserted(pageNumber * 20 - 20, 20)
+                        recyclerView.visibility = View.VISIBLE
+                        nothingFoundWarning.visibility = View.GONE
+                    }
+                    else {
+                        recyclerView.visibility = View.GONE
+                        nothingFoundWarning.visibility = View.VISIBLE
+                    }
+                    if (pageNumber <= 1) {
+                        // Scroll manually or else recycler scrolls to the bottom automatically
+                        recyclerView.layoutManager?.scrollToPosition(0)
                         swipeRefreshLayout.isRefreshing = false
                     }
                 }

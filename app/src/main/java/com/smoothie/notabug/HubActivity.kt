@@ -1,18 +1,10 @@
 package com.smoothie.notabug
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.View.OnAttachStateChangeListener
-import android.view.WindowInsets
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnAttach
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.elevation.SurfaceColors
 
 abstract class HubActivity(
     private val menuResource: Int,
@@ -31,9 +23,32 @@ abstract class HubActivity(
     private fun performTransaction(bottomBarItemId: Int) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.setReorderingAllowed(true)
-        for (pair in fragments) {
-            if (pair.first == bottomBarItemId) transaction.show(pair.second)
-            else transaction.hide(pair.second)
+        for (triple in fragments) {
+            if (triple.first == bottomBarItemId) transaction.show(triple.second)
+            else transaction.hide(triple.second)
+        }
+        transaction.commit()
+    }
+
+    fun replaceFragment(old: FadingFragment, replacement: FadingFragment) {
+        var tripleIndex = -1
+        for (i in fragments.indices) {
+            if (fragments[i].second == old) {
+                val triple = fragments[i]
+                fragments[i] = Triple(triple.first, replacement, triple.third)
+                tripleIndex = i
+                break
+            }
+        }
+        if (tripleIndex == -1) throw IllegalArgumentException("Cannot replace, no such fragment!")
+        val triple = fragments[tripleIndex]
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true)
+        transaction.remove(old)
+        transaction.add(replacement, triple.third)
+        for (fragment in fragments) {
+            if (fragment.second == replacement) transaction.show(fragment.second)
+            else transaction.hide(fragment.second)
         }
         transaction.commit()
     }
