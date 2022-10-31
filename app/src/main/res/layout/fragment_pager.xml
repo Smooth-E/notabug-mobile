@@ -13,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.smoothie.notabug.view.PillSearchBarView
+            android:id="@+id/pill_search_bar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"/>

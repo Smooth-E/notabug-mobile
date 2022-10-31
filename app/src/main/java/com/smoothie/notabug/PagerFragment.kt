@@ -1,16 +1,21 @@
 package com.smoothie.notabug
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.smoothie.notabug.view.PillSearchBarView
 
 abstract class PagerFragment : FadingFragment {
 
@@ -54,6 +59,16 @@ abstract class PagerFragment : FadingFragment {
             if (hasNames) tab.setText(tabNameResources[position])
             tab.setIcon(tabIconResources[position])
         }.attach()
+        val pillSearchBarView = view.findViewById<PillSearchBarView>(R.id.pill_search_bar_view)
+        pillSearchBarView.setOnSearchListener(object:PillSearchBarView.PillSearchExecuteListener {
+            override fun performSearch(query: String) {
+                Log.d("TAG", "Reloading with: $query")
+                for (i in tabIconResources.indices) {
+                    val fragment = getFragment(i)
+                    if (fragment is ScrollerRecyclerViewFragment<*, *>) fragment.reloadWithQuery(query)
+                }
+            }
+        })
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }
     }
 }

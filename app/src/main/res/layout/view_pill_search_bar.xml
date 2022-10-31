@@ -11,12 +11,14 @@
     android:padding="10dp"
     tools:ignore="PrivateResource"
     android:gravity="center_vertical"
-    android:id="@+id/view_root">
+    android:id="@+id/view_root"
+    android:animateLayoutChanges="true">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
         android:src="@drawable/ic_baseline_search_24"
         app:tint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,12 +31,27 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:hint="@string/label_search"
+        android:singleLine="true"
         android:paddingHorizontal="5dp"
         android:textColor="?colorSecondary"
         android:textColorHint="?colorSecondary"
         app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_round_chevron_right_24"
+        app:tint="?colorSecondary"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,9 @@ abstract class ScrollerRecyclerViewFragment<
         >(private val itemsOnPage: Int)
     : FadingFragment(R.layout.fragment_refreshable_recycler) {
 
+    protected open val connectionUrl = "https://notabug.org"
+    protected open var searchQuery = ""
+
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
     protected var thread: Thread? = null
@@ -33,6 +36,11 @@ abstract class ScrollerRecyclerViewFragment<
         thread?.interrupt()
         pageNumber = 0
         loadNewPage(true)
+    }
+
+    fun reloadWithQuery(query: String) {
+        searchQuery = query
+        reloadList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

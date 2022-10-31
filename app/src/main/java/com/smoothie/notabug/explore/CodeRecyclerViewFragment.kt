@@ -7,7 +7,6 @@ import org.jsoup.Jsoup
 
 open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>(20) {
 
-    protected open val connectionUrl = "https://notabug.org"
     protected open val iconResource = R.drawable.ic_baseline_class_24
 
     override fun getAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
@@ -32,7 +31,7 @@ open class CodeRecyclerViewFragment : ScrollerRecyclerViewFragment<CodeRecyclerV
                     }
                 }
                 pageNumber++
-                val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=$pageNumber"))
+                val document = Jsoup.parse(Utilities.get("$connectionUrl?page=$pageNumber&q=$searchQuery"))
                 val repositories = document.body().getElementsByClass("ui repository list")[0]
                 for (element in repositories.getElementsByClass("item")) {
                     val header = element.getElementsByClass("ui header")[0]

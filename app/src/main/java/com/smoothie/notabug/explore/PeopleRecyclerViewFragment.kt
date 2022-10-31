@@ -14,8 +14,6 @@ import java.net.URL
 
 open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyclerViewAdapter, PeopleRecyclerViewAdapter.DataHolder>(20) {
 
-    protected open val connectionUrl = "https://notabug.org"
-
     override fun getAdapter() = PeopleRecyclerViewAdapter(this, data)
 
     override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
@@ -38,7 +36,7 @@ open class PeopleRecyclerViewFragment : ScrollerRecyclerViewFragment<PeopleRecyc
                     }
                 }
                 pageNumber++
-                val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=${pageNumber}"))
+                val document = Jsoup.parse(Utilities.get("${connectionUrl}?page=${pageNumber}&q=${searchQuery}"))
                 val list = document.getElementsByClass("ui user list")[0]
                 for (user in list.getElementsByClass("item")) {
                     var imageUrl = user.getElementsByClass("ui avatar image")[0].attr("src")
