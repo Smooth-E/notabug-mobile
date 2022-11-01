@@ -32,6 +32,8 @@ class RepositoryViewFragment(private val page: String)
     private lateinit var textViewRepositoryName: TextView
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var textViewRepositoryDescription: TextView
+    private lateinit var buttonAuthor: View
+    private lateinit var textViewAuthorName: TextView
     private lateinit var buttonRepositoryMirror: View
     private lateinit var textViewRepositoryMirror: TextView
     private lateinit var linearLayoutActionButtonsParent: LinearLayout
@@ -50,6 +52,8 @@ class RepositoryViewFragment(private val page: String)
         textViewRepositoryName = loadableActivity.findViewById(R.id.repository_name)
         nestedScrollView = loadableActivity.findViewById(R.id.nested_scroll_view)
         textViewRepositoryDescription = loadableActivity.findViewById(R.id.repository_description)
+        buttonAuthor = loadableActivity.findViewById(R.id.group_author_info)
+        textViewAuthorName = loadableActivity.findViewById(R.id.author_name)
         buttonRepositoryMirror = loadableActivity.findViewById(R.id.group_mirror_info)
         textViewRepositoryMirror = loadableActivity.findViewById(R.id.repository_mirror_link)
         linearLayoutActionButtonsParent = loadableActivity.findViewById(R.id.action_buttons_parent)
@@ -113,6 +117,8 @@ class RepositoryViewFragment(private val page: String)
         val possiblyDescription = document.select("span.description.has-emoji")
         if (possiblyDescription.size == 0) textViewRepositoryDescription.visibility = View.GONE
         else textViewRepositoryDescription.text = possiblyDescription[0].text().trim()
+
+        textViewAuthorName.text = breadcrumb.getElementsByTag("a")[0].text().trim()
 
         val possiblyForkFlag = header.getElementsByClass("fork-flag")
         if (possiblyForkFlag.size == 0) {
