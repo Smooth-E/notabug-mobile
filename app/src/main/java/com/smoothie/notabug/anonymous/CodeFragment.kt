@@ -1,8 +1,10 @@
-package com.smoothie.notabug.explore
+package com.smoothie.notabug.anonymous
 
 import androidx.fragment.app.Fragment
 import com.smoothie.notabug.PagerFragment
 import com.smoothie.notabug.R
+import com.smoothie.notabug.explore.MirrorsFragment
+import com.smoothie.notabug.explore.RepositoriesFragment
 
 class CodeFragment(searchQuery: String = "", selectedTabIndex: Int = 0) : PagerFragment(
     arrayOf(R.drawable.ic_baseline_class_24, R.drawable.ic_baseline_collections_bookmark_24),

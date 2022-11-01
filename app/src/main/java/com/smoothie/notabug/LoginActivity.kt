@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.smoothie.notabug.anonymous.AnonymousHubActivity
+import com.smoothie.notabug.authorized.AuthorizedHubActivity
 import com.smoothie.notabug.view.InformativeBottomSheet
 import org.jsoup.Jsoup
 

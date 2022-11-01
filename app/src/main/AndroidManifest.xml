@@ -31,13 +31,13 @@
         </activity>
 
         <activity
-            android:name=".AnonymousHubActivity"
+            android:name=".anonymous.AnonymousHubActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize"/>
 
         <activity
-            android:name=".AuthorizedHubActivity"
+            android:name=".authorized.AuthorizedHubActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize"/>

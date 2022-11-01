@@ -1,8 +1,7 @@
-package com.smoothie.notabug
+package com.smoothie.notabug.authorized
 
-import com.smoothie.notabug.authorized.CommunicationPagerFragment
-import com.smoothie.notabug.authorized.ExplorePagerFragment
-import com.smoothie.notabug.authorized.ProfileFragment
+import com.smoothie.notabug.HubActivity
+import com.smoothie.notabug.R
 
 class AuthorizedHubActivity : HubActivity(
     R.menu.bottom_navigation_user,
