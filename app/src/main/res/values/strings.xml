@@ -23,6 +23,9 @@
     <string name="label_loading_entries">New entries are on the way!</string>
     <string name="label_logging_in">Logging in</string>
     <string name="label_failed_to_login">Failed to login</string>
+    <string name="label_failed_to_load_page">Failed to load requested page!</string>
+    <string name="label_nothing_found">Nothing found, try searching again!</string>
+    <string name="label_no_url">No URL was provided to load, exiting activity</string>
 
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
@@ -32,8 +35,8 @@
     <string name="action_continue">Continue</string>
     <string name="action_open_browser">Open browser</string>
     <string name="action_okay">Okay</string>
-    <string name="action_repository">Repository</string>
-    <string name="action_author">Author</string>
+    <string name="action_try_again">Try again</string>
+    <string name="action_go_back">Go back</string>
 
     <string name="description_register_dialog">
         NotABug.org requires you to solve a CAPTCHA in order to register.

@@ -1,6 +1,7 @@
 package com.smoothie.notabug.view
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
@@ -12,12 +13,11 @@ import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.smoothie.notabug.R
+import com.smoothie.notabug.repository.DirectoryViewActivity
+import com.smoothie.notabug.repository.LoadablePageActivity
 import org.w3c.dom.Text
 
 class RepositoryListItem : FrameLayout {
-
-    private val centeredDialogStyle =
-        com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
 
     private lateinit var viewClickable: View
     private lateinit var imageViewIcon : ImageView
@@ -26,6 +26,8 @@ class RepositoryListItem : FrameLayout {
     private lateinit var textViewModificationDate : TextView
     private lateinit var textViewStars : TextView
     private lateinit var textViewForks : TextView
+
+    var url: String = ""
 
     var icon = R.drawable.ic_baseline_class_24
         set (value) {
@@ -96,16 +98,10 @@ class RepositoryListItem : FrameLayout {
             starsAmount = attributes.getInteger(R.styleable.RepositoryListItem_starsAmount, 5)
         }
 
-        viewClickable.setOnLongClickListener {
-            val builder = MaterialAlertDialogBuilder(it.context, centeredDialogStyle)
-            builder.setIcon(icon)
-            builder.setTitle(name)
-            if (description!!.trim().isNotEmpty()) builder.setMessage(description)
-            builder.setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.dismiss() }
-            builder.setPositiveButton(R.string.action_repository) { dialog, _ -> Toast.makeText(this.context, "Author", Toast.LENGTH_SHORT).show() }
-            builder.setNegativeButton(R.string.action_author) { dialog, _ -> Toast.makeText(this.context, "Author", Toast.LENGTH_SHORT).show() }
-            builder.show()
-            true
+        viewClickable.setOnClickListener {
+            val intent = Intent(context, DirectoryViewActivity::class.java)
+            intent.putExtra(LoadablePageActivity.EXTRA_NAME_URL, url)
+            context.startActivity(intent)
         }
     }
 

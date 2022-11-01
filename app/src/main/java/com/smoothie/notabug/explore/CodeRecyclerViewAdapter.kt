@@ -21,6 +21,7 @@ class CodeRecyclerViewAdapter(fragment: CodeRecyclerViewFragment, data: ArrayLis
 
     override fun onBindItemViewHolder(view: RepositoryListItem, position: Int) {
         val data = getDataSet()[position]
+        view.url = "https://notabug.org" + data.url
         view.icon = data.icon
         view.name = data.name
         view.name = data.name  // Doesn't work if set once for some reason
