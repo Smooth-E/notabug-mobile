@@ -2,20 +2,14 @@ package com.smoothie.notabug.view
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.smoothie.notabug.R
-import com.smoothie.notabug.repository.DirectoryViewActivity
+import com.smoothie.notabug.repository.RepositoryViewActivity
 import com.smoothie.notabug.repository.LoadablePageActivity
-import org.w3c.dom.Text
 
 class RepositoryListItem : FrameLayout {
 
@@ -99,7 +93,7 @@ class RepositoryListItem : FrameLayout {
         }
 
         viewClickable.setOnClickListener {
-            val intent = Intent(context, DirectoryViewActivity::class.java)
+            val intent = Intent(context, RepositoryViewActivity::class.java)
             intent.putExtra(LoadablePageActivity.EXTRA_NAME_URL, url)
             context.startActivity(intent)
         }

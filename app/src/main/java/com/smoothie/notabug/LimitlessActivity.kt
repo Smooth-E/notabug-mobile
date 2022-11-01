@@ -31,4 +31,6 @@ open class LimitlessActivity : AppCompatActivity() {
         manageLimits()
     }
 
+    fun systemBarInsets(): Insets = systemBarInsets
+
 }
