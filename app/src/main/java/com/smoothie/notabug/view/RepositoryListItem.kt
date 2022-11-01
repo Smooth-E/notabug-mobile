@@ -8,12 +8,18 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.smoothie.notabug.R
 import org.w3c.dom.Text
 
 class RepositoryListItem : FrameLayout {
 
+    private val centeredDialogStyle =
+        com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+
+    private lateinit var viewClickable: View
     private lateinit var imageViewIcon : ImageView
     private lateinit var textViewName : TextView
     private lateinit var textViewDescription : TextView
@@ -72,6 +78,7 @@ class RepositoryListItem : FrameLayout {
     private fun buildView(context: Context, attributeSet: AttributeSet?) {
         val view = inflate(context, R.layout.view_repository_list_item, this)
 
+        viewClickable = view.findViewById(R.id.view_clickable)
         imageViewIcon = view.findViewById(R.id.icon)
         textViewName = view.findViewById(R.id.name)
         textViewDescription = view.findViewById(R.id.description)
@@ -87,6 +94,18 @@ class RepositoryListItem : FrameLayout {
             modificationDateString = attributes.getString(R.styleable.RepositoryListItem_modificationTimeString) ?: modificationDateString
             forksAmount = attributes.getInteger(R.styleable.RepositoryListItem_forksAmount, 16)
             starsAmount = attributes.getInteger(R.styleable.RepositoryListItem_starsAmount, 5)
+        }
+
+        viewClickable.setOnLongClickListener {
+            val builder = MaterialAlertDialogBuilder(it.context, centeredDialogStyle)
+            builder.setIcon(icon)
+            builder.setTitle(name)
+            if (description!!.trim().isNotEmpty()) builder.setMessage(description)
+            builder.setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.dismiss() }
+            builder.setPositiveButton(R.string.action_repository) { dialog, _ -> Toast.makeText(this.context, "Author", Toast.LENGTH_SHORT).show() }
+            builder.setNegativeButton(R.string.action_author) { dialog, _ -> Toast.makeText(this.context, "Author", Toast.LENGTH_SHORT).show() }
+            builder.show()
+            true
         }
     }
 

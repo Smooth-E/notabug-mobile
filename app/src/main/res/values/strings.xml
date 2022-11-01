@@ -32,6 +32,8 @@
     <string name="action_continue">Continue</string>
     <string name="action_open_browser">Open browser</string>
     <string name="action_okay">Okay</string>
+    <string name="action_repository">Repository</string>
+    <string name="action_author">Author</string>
 
     <string name="description_register_dialog">
         NotABug.org requires you to solve a CAPTCHA in order to register.
