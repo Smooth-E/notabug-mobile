@@ -6,6 +6,11 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
+import android.text.method.MovementMethod
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -72,12 +77,17 @@ class RepositoryViewFragment(private val page: String)
             .getElementsByClass("header")[0]
         val breadcrumb = document.getElementsByClass("breadcrumb")[0]
 
+        val delay = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        textViewRepositoryName.ellipsize = TextUtils.TruncateAt.MARQUEE;
         textViewRepositoryName.text = breadcrumb.select("a")[1].text().trim()
+        Handler(Looper.getMainLooper()).postDelayed({
+            textViewRepositoryName.isSelected = true
+        }, delay)
 
         val elevatedColor = SurfaceColors.getColorForElevation(loadableActivity, 8f)
         val topAppBarBackgroundColor = (viewGroupTopAppBar.background as ColorDrawable).color
-        val animationDuration = loadableActivity.resources
-            .getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        val animationDuration =
+            resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
 
         nestedScrollView.setOnScrollChangeListener(NestedScrollView
             .OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

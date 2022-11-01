@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:text="Repository"
             android:layout_marginHorizontal="24dp"
+            android:singleLine="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_back"
