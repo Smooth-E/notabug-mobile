@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         val password = preferences.getString(Utilities.SharedPrefsNames.PASSWORD, null)
         if (anonymousBrowsing) {
             startActivity(Intent(this, AnonymousHubActivity::class.java))
+            finish()
             return
         }
         else if (username.isNullOrEmpty() or password.isNullOrEmpty()) {
@@ -122,6 +123,7 @@ class LoginActivity : AppCompatActivity() {
                     val password = textInputPassword.editText?.text.toString()
                     val editor =
                         getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit()
+                    editor.remove(Utilities.SharedPrefsNames.ANONYMOUS_BROWSING_ENABLED)
                     editor.putString(Utilities.SharedPrefsNames.USERNAME, username)
                     editor.putString(Utilities.SharedPrefsNames.PASSWORD, password)
                     editor.apply()
