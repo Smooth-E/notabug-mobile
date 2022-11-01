@@ -74,6 +74,7 @@ abstract class PagerFragment : FadingFragment {
                 (activity as HubActivity).replaceFragment(getInstance(), createInstance(query, viewPager2.currentItem))
             }
         })
+        pillSearchBarView.setText(searchQuery)
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }
     }
 }

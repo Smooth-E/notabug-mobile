@@ -2,11 +2,9 @@ package com.smoothie.notabug.view
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.text.Editable
 import android.util.AttributeSet
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -20,10 +18,6 @@ class PillSearchBarView : FrameLayout {
         fun performSearch(query: String)
     }
 
-    interface PillSearchCancelListener {
-        fun cancelSearch()
-    }
-
     var hint : String? = "No hint provided"
         set(value) {
             field = value
@@ -32,8 +26,8 @@ class PillSearchBarView : FrameLayout {
 
     private lateinit var icon: ImageView
     private lateinit var editText: EditText
-    private lateinit var button: ImageView
-    private lateinit var cancelSearchListener: PillSearchCancelListener
+    private lateinit var buttonExecute: ImageView
+    private lateinit var buttonClear: ImageView
 
     private var lastQuery = ""
 
@@ -47,26 +41,29 @@ class PillSearchBarView : FrameLayout {
 
     private fun buildView(context: Context, attrs: AttributeSet?) {
         inflate(context, R.layout.view_pill_search_bar, this)
-        findViewById<View>(R.id.view_root).backgroundTintList = ColorStateList.valueOf(SurfaceColors.getColorForElevation(context, 8f))
+        findViewById<View>(R.id.view_root).backgroundTintList =
+            ColorStateList.valueOf(SurfaceColors.getColorForElevation(context, 8f))
 
         icon = findViewById(R.id.icon)
         editText = findViewById(R.id.edit_text)
-        button = findViewById(R.id.button_execute)
+        buttonExecute = findViewById(R.id.button_execute)
+        buttonClear = findViewById(R.id.button_clear)
 
-        button.visibility = View.GONE
+        buttonExecute.visibility = View.INVISIBLE
         editText.addTextChangedListener { text ->
-            if (text != null && text.isNotEmpty()) {
-                button.setImageResource(R.drawable.ic_round_chevron_right_24)
-                button.visibility = View.VISIBLE
+            if (text != null && text.toString() != lastQuery) {
+                if (editText.hasFocus()) {
+                    buttonExecute.visibility = VISIBLE
+                    buttonClear.visibility = INVISIBLE
+                }
+                else {
+                    buttonExecute.visibility = INVISIBLE
+                    buttonClear.visibility = VISIBLE
+                }
             }
             else {
-                button.visibility = View.GONE
-            }
-        }
-        cancelSearchListener = object :PillSearchCancelListener {
-            override fun cancelSearch() {
-                editText.setText("")
-                editText.clearFocus()
+                buttonExecute.visibility = INVISIBLE
+                buttonClear.visibility = INVISIBLE
             }
         }
 
@@ -85,20 +82,26 @@ class PillSearchBarView : FrameLayout {
         if (text == lastQuery) return
         lastQuery = text
         listener.performSearch(text)
-        if (text.isNotEmpty()) {
-            button.visibility = View.VISIBLE
-            button.setOnClickListener { cancelSearchListener.cancelSearch() }
-            button.setImageResource(R.drawable.ic_round_cancel_24)
-            editText.clearFocus()
-        }
-        else {
-            button.visibility = View.GONE
-            setOnSearchListener(listener)
-        }
     }
 
     fun setOnSearchListener(listener: PillSearchExecuteListener) {
-        editText.setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) performSearchWithListener(listener) }
-        button.setOnClickListener { performSearchWithListener(listener) }
+        editText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                performSearchWithListener(listener)
+                val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+            }
+        }
+        buttonExecute.setOnClickListener { performSearchWithListener(listener) }
+        buttonClear.setOnClickListener {
+            editText.setText("")
+            performSearchWithListener(listener)
+        }
     }
+
+    fun setText(text: String) {
+        editText.setText(text)
+        lastQuery = text
+    }
+
 }
