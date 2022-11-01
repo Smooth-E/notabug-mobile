@@ -73,4 +73,12 @@ class Utilities {
         fun post(url: String, body: String) = post(url, body, true)
 
     }
+
+    class SharedPrefsNames {
+        companion object {
+            const val USERNAME = "username"
+            const val PASSWORD = "password"
+            const val ANONYMOUS_BROWSING_ENABLED = "anonymous"
+        }
+    }
 }

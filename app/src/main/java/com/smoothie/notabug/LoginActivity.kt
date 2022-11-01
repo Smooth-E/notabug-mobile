@@ -1,21 +1,18 @@
 package com.smoothie.notabug
 
-import android.app.Dialog
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.smoothie.notabug.view.InformativeBottomSheet
+import org.jsoup.Jsoup
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,12 +25,21 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var textInputUsername : TextInputLayout
     private lateinit var textInputPassword: TextInputLayout
 
+    private val centeredDialogStyle: Int =
+        com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+
     private fun loginWithSharedPrefs() {
         val preferences = getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE)
-        val username = preferences.getString("login", null)
-        val password = preferences.getString("password", null)
-        if (username.isNullOrEmpty() or password.isNullOrEmpty()) {
-            Log.w("loginWithSharedPrefs", "Password or username is empty.")
+        val anonymousBrowsing = preferences
+            .getBoolean(Utilities.SharedPrefsNames.ANONYMOUS_BROWSING_ENABLED, false)
+        val username = preferences.getString(Utilities.SharedPrefsNames.USERNAME, null)
+        val password = preferences.getString(Utilities.SharedPrefsNames.PASSWORD, null)
+        if (anonymousBrowsing) {
+            startActivity(Intent(this, AnonymousHubActivity::class.java))
+            return
+        }
+        else if (username.isNullOrEmpty() or password.isNullOrEmpty()) {
+            Log.d("loginWithSharedPrefs", "Password or username is empty.")
             return
         }
         val loadingDialog = InformativeBottomSheet(
@@ -45,14 +51,33 @@ class LoginActivity : AppCompatActivity() {
         loadingDialog.show()
         Thread {
             try {
-                Utilities.post(
+                val string = Utilities.post(
                     "https://notabug.org/user/login",
                     "user_name=$username&password=$password"
                 )
-                this.runOnUiThread {
-                    loadingDialog.dismiss()
-                    startActivity(Intent(this, AuthorizedHubActivity::class.java))
-                    finish()
+                val errorLoggingIn = Jsoup.parse(string)
+                    .select(".ui.negative.message").size > 0
+                this.runOnUiThread { loadingDialog.dismiss() }
+                if (errorLoggingIn) {
+                    Log.d("loginWithSharedPrefs", "Error logging in!")
+                    preferences.edit()
+                        .remove(Utilities.SharedPrefsNames.USERNAME)
+                        .remove(Utilities.SharedPrefsNames.PASSWORD)
+                        .apply()
+                    this.runOnUiThread {
+                        MaterialAlertDialogBuilder(this, centeredDialogStyle)
+                            .setIcon(R.drawable.ic_round_report_problem_24)
+                            .setTitle(R.string.label_failed_to_login)
+                            .setMessage(R.string.description_error_logging_in)
+                            .setPositiveButton(R.string.action_okay) { dialog, _ -> dialog.dismiss() }
+                            .show()
+                    }
+                }
+                else {
+                    this.runOnUiThread {
+                        startActivity(Intent(this, AuthorizedHubActivity::class.java))
+                        finish()
+                    }
                 }
             }
             catch (exception: Exception) {
@@ -79,10 +104,9 @@ class LoginActivity : AppCompatActivity() {
 
         Utilities.initialize()
 
-        val centeredDialogStyle = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-
         buttonLogin.setOnClickListener {
-            if (textInputUsername.editText!!.text.isEmpty() or textInputPassword.editText!!.text.isEmpty()) {
+            if (textInputUsername.editText!!.text.isEmpty() or
+                textInputPassword.editText!!.text.isEmpty()) {
                 Snackbar.make(rootViewGroup, R.string.description_empty_fields, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -94,9 +118,10 @@ class LoginActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.action_proceed) { dialog, _ ->
                     val username = textInputUsername.editText?.text.toString()
                     val password = textInputPassword.editText?.text.toString()
-                    val editor = getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit()
-                    editor.putString("login", username)
-                    editor.putString("password", password)
+                    val editor =
+                        getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit()
+                    editor.putString(Utilities.SharedPrefsNames.USERNAME, username)
+                    editor.putString(Utilities.SharedPrefsNames.PASSWORD, password)
                     editor.apply()
                     loginWithSharedPrefs()
                     dialog.dismiss()
@@ -111,7 +136,8 @@ class LoginActivity : AppCompatActivity() {
                 .setMessage(R.string.description_register_dialog)
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_open_browser) { dialog, _ ->
-                    this.startActivity(Intent(ACTION_VIEW).setData(Uri.parse("https://notabug.org/user/sign_up")))
+                    this.startActivity(Intent(ACTION_VIEW)
+                        .setData(Uri.parse("https://notabug.org/user/sign_up")))
                     dialog.dismiss()
                 }
                 .show()
@@ -125,6 +151,10 @@ class LoginActivity : AppCompatActivity() {
                 .setNeutralButton(R.string.action_cancel) { dialog, _ -> dialog.cancel() }
                 .setPositiveButton(R.string.action_continue) { dialog, _ ->
                     dialog.dismiss()
+                    val editor =
+                        getSharedPreferences(Utilities.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit()
+                    editor.putBoolean("anonymous", true)
+                    editor.apply()
                     this.startActivity(Intent(this, AnonymousHubActivity::class.java))
                     this.finish()
                 }
