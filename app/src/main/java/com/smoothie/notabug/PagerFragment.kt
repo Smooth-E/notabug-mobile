@@ -19,26 +19,29 @@ abstract class PagerFragment : FadingFragment {
 
     protected val searchQuery: String
     private val hasNames: Boolean
+    private val preselectedTabIndex: Int
     private var tabIconResources: Array<Int>
     private lateinit var tabNameResources: Array<Int>
 
 
-    constructor(tabIconResources: Array<Int>, tabNameResources: Array<Int>, searchQuery: String = "") : super(R.layout.fragment_pager) {
+    constructor(tabIconResources: Array<Int>, tabNameResources: Array<Int>, searchQuery: String = "", selectedTabIndex: Int = 0) : super(R.layout.fragment_pager) {
         this.hasNames = true
         this.searchQuery = searchQuery
+        this.preselectedTabIndex = selectedTabIndex
         this.tabIconResources = tabIconResources.clone()
         this.tabNameResources = tabNameResources.clone()
     }
 
-    constructor(tabIconResources: Array<Int>, searchQuery: String = "") : super(R.layout.fragment_pager) {
+    constructor(tabIconResources: Array<Int>, searchQuery: String = "", selectedTabIndex: Int = 0) : super(R.layout.fragment_pager) {
         this.hasNames = false
         this.searchQuery = searchQuery
+        this.preselectedTabIndex = selectedTabIndex
         this.tabIconResources = tabIconResources.clone()
     }
 
     protected abstract fun getFragment(tabPosition: Int, searchQuery: String): Fragment
 
-    protected abstract fun createInstance(searchQuery: String): PagerFragment
+    protected abstract fun createInstance(searchQuery: String, selectedTabIndex: Int): PagerFragment
 
     protected abstract fun getInstance(): PagerFragment
 
@@ -58,6 +61,7 @@ abstract class PagerFragment : FadingFragment {
         val adapter = StateAdapter(childFragmentManager, lifecycle, searchQuery)
         viewPager2.adapter = adapter
         viewPager2.isUserInputEnabled = false
+        viewPager2.setCurrentItem(preselectedTabIndex, false)
         tabLayout.tabMode = TabLayout.MODE_AUTO
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             if (hasNames) tab.setText(tabNameResources[position])
@@ -67,7 +71,7 @@ abstract class PagerFragment : FadingFragment {
         pillSearchBarView.setOnSearchListener(object:PillSearchBarView.PillSearchExecuteListener {
             override fun performSearch(query: String) {
                 Log.d("TAG", "Reloading with: $query")
-                (activity as HubActivity).replaceFragment(getInstance(), createInstance(query))
+                (activity as HubActivity).replaceFragment(getInstance(), createInstance(query, viewPager2.currentItem))
             }
         })
         (view.parent as? ViewGroup)?.doOnPreDraw { startPostponedEnterTransition() }

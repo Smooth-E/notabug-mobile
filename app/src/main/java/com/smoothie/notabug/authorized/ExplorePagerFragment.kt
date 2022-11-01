@@ -9,19 +9,21 @@ import com.smoothie.notabug.explore.MirrorsFragment
 import com.smoothie.notabug.explore.OrganizationsFragment
 import com.smoothie.notabug.explore.RepositoriesFragment
 
-class ExplorePagerFragment(searchQuery: String = "") : PagerFragment(
+class ExplorePagerFragment(searchQuery: String = "", selectedTabIndex: Int = 0) : PagerFragment(
     arrayOf(
         R.drawable.ic_baseline_class_24,
         R.drawable.ic_baseline_collections_bookmark_24,
         R.drawable.ic_baseline_person_24,
         R.drawable.ic_baseline_groups_24
     ),
-    searchQuery
+    searchQuery,
+    selectedTabIndex
 ) {
 
     override fun getInstance(): PagerFragment = this
 
-    override fun createInstance(searchQuery: String): PagerFragment = ExplorePagerFragment(searchQuery)
+    override fun createInstance(searchQuery: String, selectedTabIndex: Int): PagerFragment =
+        ExplorePagerFragment(searchQuery, selectedTabIndex)
 
     override fun getFragment(tabPosition: Int, searchQuery: String): Fragment {
         return when (tabPosition) {
