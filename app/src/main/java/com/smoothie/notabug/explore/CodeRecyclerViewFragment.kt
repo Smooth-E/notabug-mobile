@@ -12,8 +12,6 @@ import org.jsoup.Jsoup
 open class CodeRecyclerViewFragment(searchQuery: String) :
     ScrollerRecyclerViewFragment<CodeRecyclerViewAdapter, CodeRecyclerViewAdapter.DataHolder>(20, searchQuery) {
 
-    protected open val iconResource = R.drawable.ic_baseline_class_24
-
     override fun createAdapter(): CodeRecyclerViewAdapter = CodeRecyclerViewAdapter(this, data)
 
     override fun loadNewPage(isReloading: Boolean) = LoadingThread(isReloading).start()
@@ -43,6 +41,11 @@ open class CodeRecyclerViewFragment(searchQuery: String) :
                 if (itemElements.size < 20) (recyclerView.adapter as RecyclerViewWithFooterAdapter<*, *, *>).stopLoadingNewPages()
                 for (element in itemElements) {
                     val header = element.getElementsByClass("ui header")[0]
+                    var iconResource = R.drawable.ic_baseline_class_24
+                    if (header.getElementsByClass("octicon-repo-clone").size > 0)
+                        iconResource = R.drawable.ic_baseline_collections_bookmark_24
+                    else if (header.getElementsByClass("octicon-lock").size > 0)
+                        iconResource = R.drawable.ic_baseline_lock_24
                     val name = element.getElementsByClass("name")[0]
                     val stats = header.getElementsByClass("ui right metas")[0].getElementsByTag("span")
                     val possibleDescription = element.getElementsByClass("has-emoji")
