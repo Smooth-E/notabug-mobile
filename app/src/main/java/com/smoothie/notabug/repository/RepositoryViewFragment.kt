@@ -11,21 +11,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.text.method.MovementMethod
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.doOnPreDraw
-import androidx.core.view.marginTop
-import androidx.core.view.setMargins
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.NestedScrollView.OnScrollChangeListener
 import androidx.viewpager2.widget.ViewPager2
@@ -43,7 +36,8 @@ import java.util.concurrent.TimeoutException
 class RepositoryViewFragment(private val page: String)
     : PageParserFragment(page, R.layout.fragment_repository_view) {
 
-    private var topAppBarColorAnimation: ValueAnimator = ValueAnimator()
+    private lateinit var topAppBarColorAnimator : ValueAnimator
+    private lateinit var tabLayoutColorAnimator: ValueAnimator
     private lateinit var avatarLoadingThread: Thread
     private lateinit var viewRoot: View
     private lateinit var viewGroupTopAppBar: ViewGroup
@@ -224,8 +218,10 @@ class RepositoryViewFragment(private val page: String)
 
         val elevatedColor = SurfaceColors.getColorForElevation(loadableActivity, 8f)
         val topAppBarBackgroundColor = (viewGroupTopAppBar.background as ColorDrawable).color
-        val animationDuration =
+        val animationDurationMedium =
             resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        val animationDurationShort =
+            resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
         tabLayoutAlternative.background = ColorDrawable(elevatedColor)
 
@@ -236,31 +232,47 @@ class RepositoryViewFragment(private val page: String)
 
             val difference = nestedScrollView.measuredHeight - viewPager2.measuredHeight - tabLayout.measuredHeight
 
-            nestedScrollView.setOnScrollChangeListener(OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            nestedScrollView.setOnScrollChangeListener(OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
                 if (oldScrollY <= 0 && scrollY > 0) {
-                    topAppBarColorAnimation =
+                    topAppBarColorAnimator =
                         ValueAnimator.ofObject(ArgbEvaluator(), topAppBarBackgroundColor, elevatedColor)
-                    topAppBarColorAnimation.duration = animationDuration
-                    topAppBarColorAnimation.addUpdateListener {
+                    topAppBarColorAnimator.duration = animationDurationMedium
+                    topAppBarColorAnimator.addUpdateListener {
                         viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
                     }
-                    topAppBarColorAnimation.start()
+                    topAppBarColorAnimator.start()
                 }
                 else if (oldScrollY > 0 && scrollY <= 0) {
-                    topAppBarColorAnimation =
+                    topAppBarColorAnimator =
                         ValueAnimator.ofObject(ArgbEvaluator(), elevatedColor, topAppBarBackgroundColor)
-                    topAppBarColorAnimation.duration = animationDuration
-                    topAppBarColorAnimation.addUpdateListener {
+                    topAppBarColorAnimator.duration = animationDurationMedium
+                    topAppBarColorAnimator.addUpdateListener {
                         viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
                     }
-                    topAppBarColorAnimation.start()
+                    topAppBarColorAnimator.start()
                 }
 
                 if (difference in (oldScrollY + 1)..scrollY) {
+                    tabLayoutColorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), topAppBarBackgroundColor, elevatedColor)
+                    tabLayoutColorAnimator.duration = animationDurationShort
+                    tabLayoutColorAnimator.addUpdateListener {
+                        val drawable = ColorDrawable(it.animatedValue as Int)
+                        tabLayout.background = drawable
+                        tabLayoutAlternative.background = drawable
+                    }
+                    tabLayoutColorAnimator.start()
                     tabLayout.visibility = View.INVISIBLE
                     tabLayoutAlternative.visibility = View.VISIBLE
                 }
                 else if (difference in (scrollY + 1)..oldScrollY) {
+                    tabLayoutColorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), elevatedColor, topAppBarBackgroundColor)
+                    tabLayoutColorAnimator.duration = animationDurationShort
+                    tabLayoutColorAnimator.addUpdateListener {
+                        val drawable = ColorDrawable(it.animatedValue as Int)
+                        tabLayout.background = drawable
+                        tabLayoutAlternative.background = drawable
+                    }
+                    tabLayoutColorAnimator.start()
                     tabLayout.visibility = View.VISIBLE
                     tabLayoutAlternative.visibility = View.GONE
                 }
