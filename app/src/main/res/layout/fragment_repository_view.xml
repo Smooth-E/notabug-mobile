@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="PrivateResource">
+    tools:ignore="PrivateResource"
+    android:id="@+id/view_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_app_bar"
@@ -61,7 +62,8 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/top_app_bar">
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,7 +133,7 @@
                         style="@style/TextAppearance.Material3.TitleMedium"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Auuthor:"
+                        android:text="Author:"
                         android:paddingStart="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/author_avatar_group"
@@ -263,6 +265,7 @@
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/view_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabInlineLabel="true"
@@ -302,11 +305,54 @@
             </com.google.android.material.tabs.TabLayout>
 
             <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager2"
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="0dp"/>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:visibility="gone"
+        android:background="#F00"
+        android:id="@+id/view_tab_layout_alternative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabInlineLabel="true"
+        app:tabMode="scrollable"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:text="Files" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:text="Issues" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:text="Pull Requests" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:text="Wiki" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_class_24"
+            android:text="Settings" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

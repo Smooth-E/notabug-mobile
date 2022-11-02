@@ -14,6 +14,7 @@ import android.text.TextUtils
 import android.text.method.MovementMethod
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -22,11 +23,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginTop
 import androidx.core.view.setMargins
 import androidx.core.widget.NestedScrollView
+import androidx.core.widget.NestedScrollView.OnScrollChangeListener
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.smoothie.notabug.R
 import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
@@ -39,10 +45,12 @@ class RepositoryViewFragment(private val page: String)
 
     private var topAppBarColorAnimation: ValueAnimator = ValueAnimator()
     private lateinit var avatarLoadingThread: Thread
+    private lateinit var viewRoot: View
     private lateinit var viewGroupTopAppBar: ViewGroup
     private lateinit var buttonBack: ImageView
     private lateinit var imageViewRepositoryIcon: ImageView
     private lateinit var textViewRepositoryName: TextView
+    private lateinit var tabLayoutAlternative: TabLayout
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var textViewRepositoryDescription: TextView
     private lateinit var buttonAuthor: View
@@ -55,16 +63,41 @@ class RepositoryViewFragment(private val page: String)
     private lateinit var buttonStar: Button
     private lateinit var buttonWatch: Button
     private lateinit var buttonFork: Button
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
+
+    private fun initializeTabLayout(tabLayout: TabLayout, tabLayoutTwin: TabLayout) {
+        tabLayout.addOnTabSelectedListener(object:OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tabLayout.visibility != View.VISIBLE) return
+                tabLayoutTwin.selectTab(tab)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+        })
+
+        tabLayout.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (tabLayout.visibility != View.VISIBLE) return@setOnScrollChangeListener
+            tabLayoutTwin.scrollY = scrollY
+            tabLayoutTwin.scrollX = scrollX
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val document = Jsoup.parse(page)
 
+        viewRoot = loadableActivity.findViewById(R.id.view_root)
         viewGroupTopAppBar = loadableActivity.findViewById(R.id.top_app_bar)
         buttonBack = loadableActivity.findViewById(R.id.button_back)
         imageViewRepositoryIcon = loadableActivity.findViewById(R.id.repository_icon)
         textViewRepositoryName = loadableActivity.findViewById(R.id.repository_name)
+        tabLayoutAlternative = loadableActivity.findViewById(R.id.view_tab_layout_alternative)
         nestedScrollView = loadableActivity.findViewById(R.id.nested_scroll_view)
         textViewRepositoryDescription = loadableActivity.findViewById(R.id.repository_description)
         buttonAuthor = loadableActivity.findViewById(R.id.group_author_info)
@@ -77,6 +110,8 @@ class RepositoryViewFragment(private val page: String)
         buttonStar = loadableActivity.findViewById(R.id.button_star)
         buttonWatch = loadableActivity.findViewById(R.id.button_watch)
         buttonFork = loadableActivity.findViewById(R.id.button_fork)
+        tabLayout = loadableActivity.findViewById(R.id.view_tab_layout)
+        viewPager2 = loadableActivity.findViewById(R.id.view_pager2)
 
         viewGroupTopAppBar.setPadding(
             viewGroupTopAppBar.paddingLeft,
@@ -104,32 +139,6 @@ class RepositoryViewFragment(private val page: String)
         Handler(Looper.getMainLooper()).postDelayed({
             textViewRepositoryName.isSelected = true
         }, delay)
-
-        val elevatedColor = SurfaceColors.getColorForElevation(loadableActivity, 8f)
-        val topAppBarBackgroundColor = (viewGroupTopAppBar.background as ColorDrawable).color
-        val animationDuration =
-            resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-
-        nestedScrollView.setOnScrollChangeListener(NestedScrollView
-            .OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (oldScrollY <= 0 && scrollY > 0) {
-                topAppBarColorAnimation =
-                    ValueAnimator.ofObject(ArgbEvaluator(), topAppBarBackgroundColor, elevatedColor)
-                topAppBarColorAnimation.duration = animationDuration
-                topAppBarColorAnimation.addUpdateListener {
-                    viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
-                }
-                topAppBarColorAnimation.start()
-            } else if (oldScrollY > 0 && scrollY <= 0) {
-                topAppBarColorAnimation =
-                    ValueAnimator.ofObject(ArgbEvaluator(), elevatedColor, topAppBarBackgroundColor)
-                topAppBarColorAnimation.duration = animationDuration
-                topAppBarColorAnimation.addUpdateListener {
-                    viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
-                }
-                topAppBarColorAnimation.start()
-            }
-        })
 
         val possiblyDescription = document.select("span.description.has-emoji")
         if (possiblyDescription.size == 0) textViewRepositoryDescription.visibility = View.GONE
@@ -208,6 +217,55 @@ class RepositoryViewFragment(private val page: String)
             )
             buttonFork.visibility = View.GONE
             linearLayoutActionButtonsParent.weightSum = 2f
+        }
+
+        initializeTabLayout(tabLayout, tabLayoutAlternative)
+        initializeTabLayout(tabLayoutAlternative, tabLayout)
+
+        val elevatedColor = SurfaceColors.getColorForElevation(loadableActivity, 8f)
+        val topAppBarBackgroundColor = (viewGroupTopAppBar.background as ColorDrawable).color
+        val animationDuration =
+            resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+
+        tabLayoutAlternative.background = ColorDrawable(elevatedColor)
+
+        nestedScrollView.post {
+            val layoutParams = viewPager2.layoutParams
+            layoutParams.height = view.measuredHeight - tabLayout.measuredHeight
+            viewPager2.layoutParams = layoutParams
+
+            val difference = nestedScrollView.measuredHeight - viewPager2.measuredHeight - tabLayout.measuredHeight
+
+            nestedScrollView.setOnScrollChangeListener(OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (oldScrollY <= 0 && scrollY > 0) {
+                    topAppBarColorAnimation =
+                        ValueAnimator.ofObject(ArgbEvaluator(), topAppBarBackgroundColor, elevatedColor)
+                    topAppBarColorAnimation.duration = animationDuration
+                    topAppBarColorAnimation.addUpdateListener {
+                        viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
+                    }
+                    topAppBarColorAnimation.start()
+                }
+                else if (oldScrollY > 0 && scrollY <= 0) {
+                    topAppBarColorAnimation =
+                        ValueAnimator.ofObject(ArgbEvaluator(), elevatedColor, topAppBarBackgroundColor)
+                    topAppBarColorAnimation.duration = animationDuration
+                    topAppBarColorAnimation.addUpdateListener {
+                        viewGroupTopAppBar.background = ColorDrawable(it.animatedValue as Int)
+                    }
+                    topAppBarColorAnimation.start()
+                }
+
+                if (difference in (oldScrollY + 1)..scrollY) {
+                    tabLayout.visibility = View.INVISIBLE
+                    tabLayoutAlternative.visibility = View.VISIBLE
+                }
+                else if (difference in (scrollY + 1)..oldScrollY) {
+                    tabLayout.visibility = View.VISIBLE
+                    tabLayoutAlternative.visibility = View.GONE
+                }
+            })
+
         }
     }
 
