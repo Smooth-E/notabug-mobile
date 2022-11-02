@@ -15,6 +15,7 @@
         <attr name="website" format="string" />
         <attr name="location" format="string" />
         <attr name="joinDateString" format="string" />
+        <attr name="scrollable" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="PillSearchBarView">
@@ -39,6 +40,10 @@
         <attr name="website" />
         <attr name="location" />
         <attr name="joinDateString" />
+    </declare-styleable>
+
+    <declare-styleable name="ToggleableNestedScrollView">
+        <attr name="scrollable" />
     </declare-styleable>
 
 </resources>

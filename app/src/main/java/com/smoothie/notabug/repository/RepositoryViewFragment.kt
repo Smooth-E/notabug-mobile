@@ -18,6 +18,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.imageview.ShapeableImageView
 import com.smoothie.notabug.R
 import com.smoothie.notabug.Utilities
@@ -49,6 +50,15 @@ class RepositoryViewFragment(page: String)
     private lateinit var buttonStar: Button
     private lateinit var buttonWatch: Button
     private lateinit var buttonFork: Button
+
+    override fun getTab(position: Int): Pair<Int, Int> = arrayOf(
+        Pair(R.drawable.ic_baseline_class_24, R.string.placeholder_website),
+        Pair(R.drawable.ic_baseline_collections_bookmark_24, R.string.placeholder_location),
+    )[position]
+
+    override fun getTabCount(): Int = 2
+
+    override fun getFragmentAtPosition(position: Int): Fragment = TabbedPageTabFragment(this, R.layout.test_layout)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

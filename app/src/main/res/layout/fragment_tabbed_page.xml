@@ -15,7 +15,8 @@
         android:background="?colorSurface"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.core.widget.NestedScrollView
+    <com.smoothie.notabug.view.ToggleableNestedScrollView
+        app:scrollable="false"
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -53,7 +54,7 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </com.smoothie.notabug.view.ToggleableNestedScrollView>
 
     <com.google.android.material.tabs.TabLayout
         android:visibility="gone"
