@@ -3,6 +3,8 @@ package com.smoothie.notabug.repository
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -11,21 +13,32 @@ import android.os.Looper
 import android.text.TextUtils
 import android.text.method.MovementMethod
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.marginTop
+import androidx.core.view.setMargins
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.imageview.ShapeableImageView
 import com.smoothie.notabug.R
+import com.smoothie.notabug.Utilities
 import org.jsoup.Jsoup
+import java.io.InterruptedIOException
+import java.net.URL
+import java.util.concurrent.TimeoutException
 
 class RepositoryViewFragment(private val page: String)
     : PageParserFragment(page, R.layout.fragment_repository_view) {
 
     private var topAppBarColorAnimation: ValueAnimator = ValueAnimator()
+    private lateinit var avatarLoadingThread: Thread
     private lateinit var viewGroupTopAppBar: ViewGroup
     private lateinit var buttonBack: ImageView
     private lateinit var imageViewRepositoryIcon: ImageView
@@ -33,6 +46,8 @@ class RepositoryViewFragment(private val page: String)
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var textViewRepositoryDescription: TextView
     private lateinit var buttonAuthor: View
+    private lateinit var progressBarAuthorAvatar: ProgressBar
+    private lateinit var imageViewAuthorAvatar: ShapeableImageView
     private lateinit var textViewAuthorName: TextView
     private lateinit var buttonRepositoryMirror: View
     private lateinit var textViewRepositoryMirror: TextView
@@ -53,6 +68,8 @@ class RepositoryViewFragment(private val page: String)
         nestedScrollView = loadableActivity.findViewById(R.id.nested_scroll_view)
         textViewRepositoryDescription = loadableActivity.findViewById(R.id.repository_description)
         buttonAuthor = loadableActivity.findViewById(R.id.group_author_info)
+        progressBarAuthorAvatar = loadableActivity.findViewById(R.id.author_avatar_progress_spinner)
+        imageViewAuthorAvatar = loadableActivity.findViewById(R.id.author_avatar)
         textViewAuthorName = loadableActivity.findViewById(R.id.author_name)
         buttonRepositoryMirror = loadableActivity.findViewById(R.id.group_mirror_info)
         textViewRepositoryMirror = loadableActivity.findViewById(R.id.repository_mirror_link)
@@ -118,7 +135,48 @@ class RepositoryViewFragment(private val page: String)
         if (possiblyDescription.size == 0) textViewRepositoryDescription.visibility = View.GONE
         else textViewRepositoryDescription.text = possiblyDescription[0].text().trim()
 
-        textViewAuthorName.text = breadcrumb.getElementsByTag("a")[0].text().trim()
+        val authorElement = breadcrumb.getElementsByTag("a")[0]
+        textViewAuthorName.text = authorElement.text().trim()
+        val authorProfileUrl = "https://notabug.org" + authorElement.attr("href")
+        imageViewAuthorAvatar.visibility = View.INVISIBLE
+        progressBarAuthorAvatar.visibility = View.VISIBLE
+        avatarLoadingThread = Thread {
+            while (true) {
+                try {
+                    val page = Jsoup.parse(Utilities.get(authorProfileUrl))
+                    val possiblyOrganizationAvatar = page.getElementById("org-avatar")
+                    var avatarUrl = if (possiblyOrganizationAvatar != null) {
+                        possiblyOrganizationAvatar.attr("src")
+                    }
+                    else {
+                        page.select(".user.profile")[0]
+                            .getElementsByClass("card")[0]
+                            .getElementsByClass("image")[0]
+                            .getElementsByTag("img")[0]
+                            .attr("src")
+                    }
+                    if (avatarUrl.startsWith("/")) avatarUrl = "https://notabug.org$avatarUrl"
+                    val avatar = BitmapFactory.decodeStream(URL(avatarUrl).openStream())
+                    val avatarDrawable = BitmapDrawable(resources, avatar)
+                    loadableActivity.runOnUiThread {
+                        imageViewAuthorAvatar.setImageDrawable(avatarDrawable)
+                        imageViewAuthorAvatar.visibility = View.VISIBLE
+                        progressBarAuthorAvatar.visibility = View.INVISIBLE
+                    }
+                    break
+                }
+                catch (exception : Exception) {
+                    if (exception is TimeoutException)
+                        Log.d("Author Avatar", "Safe exception occured.\n$exception")
+                    else if (exception is InterruptedException ||
+                        exception is InterruptedIOException ||
+                        exception is IllegalStateException)
+                        break
+                    else throw exception
+                }
+            }
+        }
+        avatarLoadingThread.start()
 
         val possiblyForkFlag = header.getElementsByClass("fork-flag")
         if (possiblyForkFlag.size == 0) {
@@ -151,6 +209,11 @@ class RepositoryViewFragment(private val page: String)
             buttonFork.visibility = View.GONE
             linearLayoutActionButtonsParent.weightSum = 2f
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        avatarLoadingThread.interrupt()
     }
 
 }
