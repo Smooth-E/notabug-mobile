@@ -49,10 +49,10 @@ class RepositoryViewFragment(page: String)
     private lateinit var buttonWatch: Button
     private lateinit var buttonFork: Button
 
-    override fun getTab(position: Int): Pair<Int, Int> = arrayOf(
+    override val tabResources: Array<Pair<Int, Int>> = arrayOf(
         Pair(R.drawable.ic_baseline_class_24, R.string.placeholder_website),
         Pair(R.drawable.ic_baseline_collections_bookmark_24, R.string.placeholder_location),
-    )[position]
+    )
 
     override fun getTabCount(): Int = 2
 

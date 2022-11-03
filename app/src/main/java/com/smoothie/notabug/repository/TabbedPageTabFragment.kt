@@ -16,13 +16,6 @@ class TabbedPageTabFragment(
 
     private lateinit var toggleableNestedScrollView: ToggleableNestedScrollView
 
-    var scrollable: Boolean = true
-        set (value) {
-            toggleableNestedScrollView.scrollable = value
-            field = value
-        }
-        get () = toggleableNestedScrollView.scrollable
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toggleableNestedScrollView = view.findViewById(R.id.toggleable_scroll_view)

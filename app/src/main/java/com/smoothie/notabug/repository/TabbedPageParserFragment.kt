@@ -27,7 +27,7 @@ import kotlin.math.min
 abstract class TabbedPageParserFragment(
     private val topAppBarLayoutResource: Int,
     private val headerSectionLayoutResource: Int,
-    private val page: String
+    page: String
 ) : PageParserFragment(page, R.layout.fragment_tabbed_page) {
     
     private lateinit var topAppBarColorAnimator : ValueAnimator
@@ -39,9 +39,7 @@ abstract class TabbedPageParserFragment(
     private lateinit var tabLayoutAlternative: TabLayout
     private lateinit var viewPager2: ViewPager2
 
-    protected lateinit var document: Document
-
-    abstract fun getTab(position: Int): Pair<Int, Int>
+    protected abstract val tabResources: Array<Pair<Int, Int>>
 
     abstract fun getTabCount(): Int
 
@@ -88,15 +86,14 @@ abstract class TabbedPageParserFragment(
 
     private fun attachTabLayoutMediator(tabLayout: TabLayout) {
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.setText(getTab(position).second)
-            tab.setIcon(getTab(position).first)
+            val pair = tabResources[position]
+            tab.setIcon(pair.first)
+            tab.setText(pair.second)
         }.attach()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        document = Jsoup.parse(page)
 
         viewGroupTopAppBar = view.findViewById(R.id.container_top_app_bar)
         header = view.findViewById(R.id.container_header)
