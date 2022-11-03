@@ -49,14 +49,13 @@ class RepositoryViewFragment(page: String)
     private lateinit var buttonWatch: Button
     private lateinit var buttonFork: Button
 
+    override val tabCount: Int = 2
     override val tabResources: Array<Pair<Int, Int>> = arrayOf(
-        Pair(R.drawable.ic_baseline_class_24, R.string.placeholder_website),
-        Pair(R.drawable.ic_baseline_collections_bookmark_24, R.string.placeholder_location),
+        Pair(R.drawable.ic_baseline_class_24, R.string.placeholder_email),
+        Pair(R.drawable.ic_baseline_collections_bookmark_24, R.string.placeholder_website)
     )
 
-    override fun getTabCount(): Int = 2
-
-    override fun getFragmentAtPosition(position: Int): Fragment = TabbedPageTabFragment(this, R.layout.test_layout)
+    override fun getFragment(position: Int): Fragment = Fragment(R.layout.test_layout)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
