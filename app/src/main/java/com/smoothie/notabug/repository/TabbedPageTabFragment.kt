@@ -26,8 +26,8 @@ class TabbedPageTabFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toggleableNestedScrollView = view.findViewById(R.id.toggleable_scroll_view)
-        val inflatedView = layoutInflater.inflate(layoutResource, toggleableNestedScrollView)
-        toggleableNestedScrollView.setOnScrollChangeListener(
+        layoutInflater.inflate(layoutResource, toggleableNestedScrollView, true)
+        toggleableNestedScrollView.setOnScrollChangeListener (
             NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 Log.w("", "" + (scrollY - oldScrollY))
                 parentFragment.notifyScrollChange(toggleableNestedScrollView, scrollY - oldScrollY)
