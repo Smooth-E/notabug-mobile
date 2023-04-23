@@ -34,7 +34,8 @@
                 android:id="@+id/view_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabInlineLabel="true"/>
+                app:tabInlineLabel="true"
+                app:tabMode="auto"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

@@ -35,8 +35,9 @@ abstract class TabbedPageParserFragment(
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
 
-    protected abstract val tabResources: Array<Pair<Int, Int>>
-    protected abstract val tabCount: Int
+    protected abstract fun getTabCount(): Int
+
+    protected abstract fun getTabResources(): ArrayList<Pair<Int, Int>>
 
     protected abstract fun getFragment(position: Int): Fragment
 
@@ -45,7 +46,7 @@ abstract class TabbedPageParserFragment(
 
         override fun createFragment(position: Int): Fragment = getFragment(position)
 
-        override fun getItemCount(): Int = tabCount
+        override fun getItemCount(): Int = getTabCount()
 
     }
 
@@ -77,6 +78,7 @@ abstract class TabbedPageParserFragment(
         viewPager2.adapter = StateAdapter(childFragmentManager, lifecycle)
         viewPager2.isUserInputEnabled = false
 
+        val tabResources = getTabResources()
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             val pair = tabResources[position]
             tab.setIcon(pair.first)

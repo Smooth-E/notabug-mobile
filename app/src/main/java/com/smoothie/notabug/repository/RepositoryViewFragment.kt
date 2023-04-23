@@ -49,13 +49,36 @@ class RepositoryViewFragment(page: String)
     private lateinit var buttonWatch: Button
     private lateinit var buttonFork: Button
 
-    override val tabCount: Int = 2
-    override val tabResources: Array<Pair<Int, Int>> = arrayOf(
-        Pair(R.drawable.ic_baseline_class_24, R.string.placeholder_email),
-        Pair(R.drawable.ic_baseline_collections_bookmark_24, R.string.placeholder_website)
-    )
+    private lateinit var tabResources: ArrayList<Pair<Int, Int>>
 
-    override fun getFragment(position: Int): Fragment = Fragment(R.layout.test_layout)
+    override fun getTabCount(): Int {
+        val tabular = document.select(".ui.tabular.menu.navbar")[0]
+        return tabular.getElementsByTag("a").size
+    }
+
+    override fun getTabResources(): ArrayList<Pair<Int, Int>> {
+        if (!::tabResources.isInitialized) {
+            val tabular = document.select(".ui.tabular.menu.navbar")[0]
+            val array = arrayListOf(Pair(R.drawable.ic_round_description_24, R.string.tab_files))
+            if (tabular.getElementsByClass("octicon-issue-opened").size > 0)
+                array.add(Pair(R.drawable.ic_round_info_24, R.string.tab_issues))
+            if (tabular.getElementsByClass("octicon-git-pull-request").size > 0)
+                array.add(Pair(R.drawable.icons8_pull_request, R.string.tab_pull_requests))
+            if (tabular.getElementsByClass("octicon-book").size > 0)
+                array.add(Pair(R.drawable.ic_round_menu_book_24, R.string.tab_wiki))
+            if (tabular.getElementsByClass("octicon-tools").size > 0)
+                array.add(Pair(R.drawable.ic_round_construction_24, R.string.tab_settings))
+            tabResources = array
+        }
+        return tabResources
+    }
+
+    override fun getFragment(position: Int): Fragment {
+        return when (tabResources[position].second) {
+            R.string.tab_files -> RepositoryFrontPageFragment("https://notabug.org" + document.getElementsByClass("octicon-file-text")[0].parent()!!.attr("a"))
+            else -> Fragment()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

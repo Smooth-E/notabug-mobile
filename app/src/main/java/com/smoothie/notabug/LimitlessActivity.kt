@@ -3,10 +3,13 @@ package com.smoothie.notabug
 import android.graphics.Insets
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnAttach
+import androidx.recyclerview.widget.RecyclerView
 
 open class LimitlessActivity : AppCompatActivity() {
 

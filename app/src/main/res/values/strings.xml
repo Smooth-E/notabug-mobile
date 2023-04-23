@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="tab_empty"></string>
+
     <string name="tab_code">Code</string>
     <string name="tab_people">People</string>
     <string name="tab_settings">Settings</string>
@@ -10,7 +12,10 @@
     <string name="tab_explore">Explore</string>
     <string name="tab_communication">Communication</string>
     <string name="tab_profile">Profile</string>
-    <string name="tab_empty"></string>
+    <string name="tab_files">Files</string>
+    <string name="tab_issues">Issues</string>
+    <string name="tab_pull_requests">Pull Requests</string>
+    <string name="tab_wiki">Wiki</string>
 
     <string name="app_name">NotABug Mobile</string>
     <string name="label_website_name">NotABug.org</string>
